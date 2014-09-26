@@ -14,7 +14,11 @@ class Usuarios{
     public $nombre;
     public $correo;
     
-    
+    /*
+     * @
+     * 
+     * 
+   */
     public function consultarUsuario($usuario,$password){
         
         $res = null;
