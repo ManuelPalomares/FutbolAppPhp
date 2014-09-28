@@ -10,7 +10,7 @@ class PermisosApp {
         
         $sql = "select d.DESCRIPCION_ACCION from usuarios a ,usuarios_rol b,roles_opciones c,opciones_acciones d
 where 
-a.NOMBRE = '$usuario'
+a.USUARIO = '$usuario'
 and b.CODIGO_USUARIO = a.CODIGO
 and b.ESTADO = 'A'
 and b.ROL = c.ROL

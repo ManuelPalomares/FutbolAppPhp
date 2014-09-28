@@ -1,8 +1,25 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: X-Requested-With');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require (__DIR__).'/../../model/menu.php';
+require (__DIR__).'/../../model/session.php';
+
+
+$session = new SessionApp();
+$usuario = $session->isRegisterUserJson(false);
+
+$datos = $_REQUEST;
+$accion = $datos["accion"];
+$opcion = $datos["opcion"];
+$menu = new MenuApp();
+if($accion === "CONSULTARMODULOS"){
+    $menu->menuModulosJson($usuario);
+}
+
+if($accion ==="CONSULTAROPCION"){
+    $menu->menuSubMenusJson($usuario, $opcion);
+}
+?>
 

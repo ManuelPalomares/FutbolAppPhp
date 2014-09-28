@@ -4,7 +4,8 @@ header('Access-Control-Allow-Headers: X-Requested-With');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
 require (__DIR__).'/../../model/usuarios.php';
-
+ini_set('session.cookie_domain', '*');
+session_start();
 $datos = $_REQUEST;
 
 $accion  = $datos["accion"];
@@ -23,7 +24,6 @@ if($usuario[0]["CODIGO"] != null){
         exit();
     }
     //REGISTRAR USUARIO
-    session_start();
     $_SESSION["APP_WEBMAPSOFT.COM"]["USER"] = $usuario[0]["USUARIO"];
     $res["success"] = true;
     echo json_encode($res);
