@@ -26,9 +26,14 @@ class MenuApp {
     }
     
     public function menuModulosJson($usuario){
+        
         $result = null;
         $result["success"] = true;
         $result["modulos"] = $this->menuModulos($usuario);
+        foreach ($result["modulos"] as $key => $value) {
+            $value["SUBMENUS"] = $this->menusSubmenus($usuario, $value["CODIGO"]);
+            $result["modulos"][$key]=$value;
+        }
         echo json_encode($result);
     }
     
