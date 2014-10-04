@@ -3,8 +3,9 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: X-Requested-With');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
-require (__DIR__).'/../../model/menu.php';
-require (__DIR__).'/../../model/session.php';
+require_once("../include/index.php"); 
+require_once ("../../model/menu.php");
+require_once ("../../model/session.php");
 
 
 $session = new SessionApp();

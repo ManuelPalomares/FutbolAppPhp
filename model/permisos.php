@@ -1,6 +1,7 @@
 <?php
 
-include_once (__DIR__).'/../libs/ConexionBD.php';
+require_once(dirname(dirname(__FILE__))."/libs/conexionBD.php");
+
 class PermisosApp {
     
     public function validarPermisoSistema($usuario,$accion,$opcion){

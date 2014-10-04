@@ -1,9 +1,4 @@
 <?php
-
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: X-Requested-With');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-ini_set('session.cookie_domain', '*');
 session_start();
         
 class SessionApp {
@@ -22,7 +17,7 @@ class SessionApp {
     public function isRegisterUserJson($jsonres = true) {
         $res = array();
 
-        if ($this->isRegisterUser() == "N") {
+        if (SessionApp::isRegisterUser() == "N") {
             $res["success"] = true;
             $res["message_error"] = "Usuario no registrado";
             echo json_encode($res);
@@ -30,6 +25,8 @@ class SessionApp {
         } else {
             if ($jsonres ==true) {
                 $res["success"] = true;
+                $res["user"] =$_SESSION["APP_WEBMAPSOFT.COM"]["USER"] ;
+                $res["nombre"] =$_SESSION["APP_WEBMAPSOFT.COM"]["NOMBRE"] ;
                 echo json_encode($res);
                 exit();
             }else{

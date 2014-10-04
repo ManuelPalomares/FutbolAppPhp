@@ -1,6 +1,6 @@
 <?php
 
-include_once (__DIR__).'/../libs/ConexionBD.php';
+require_once(dirname(dirname(__FILE__))."/libs/conexionBD.php");
 
 class MenuApp {
     
@@ -8,7 +8,7 @@ class MenuApp {
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql  = "SELECT * FROM MODULOSUSUARIO WHERE USUARIO = '$usuario'";
+        $sql  = "SELECT * FROM modulosusuario WHERE USUARIO = '$usuario'";
         $rs = $db->Execute($sql);      
         $res = $rs->getRows();
         return $res;

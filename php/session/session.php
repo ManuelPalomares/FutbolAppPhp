@@ -1,7 +1,13 @@
 <?php
-// Inialize session
-include (__DIR__).'/../../model/session.php';
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: X-Requested-With');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
-$session = new SessionApp();
+// Inialize session
+require_once('../include/index.php');
+require_once("../../model/session.php");
+/*$session = new SessionApp();
 $session->isRegisterUserJson();
+*/
+SessionApp::isRegisterUserJson();
 ?>

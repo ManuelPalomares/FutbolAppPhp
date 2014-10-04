@@ -3,7 +3,9 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: X-Requested-With');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
-require (__DIR__).'/../../model/usuarios.php';
+
+require_once('../include/index.php');
+require_once("../../model/usuarios.php");
 session_start();
 $datos = $_REQUEST;
 
