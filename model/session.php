@@ -27,6 +27,7 @@ class SessionApp {
                 $res["success"] = true;
                 $res["user"] =$_SESSION["APP_WEBMAPSOFT.COM"]["USER"] ;
                 $res["nombre"] =$_SESSION["APP_WEBMAPSOFT.COM"]["NOMBRE"] ;
+                $res["nombre"] = "Manuel Alejandro Palomares";
                 echo json_encode($res);
                 exit();
             }else{
