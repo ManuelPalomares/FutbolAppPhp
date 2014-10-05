@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/FutbolAppPhp/libs/conexdata.dt</file>
+            <file>file:/C:/wamp/www/FutbolAppPhp/php/menus/menu.php</file>
+            <file>file:/C:/wamp/www/FutbolAppPhp/model/usuarios.php</file>
+            <file>file:/C:/wamp/www/FutbolAppPhp/model/Roles.php</file>
+            <file>file:/C:/wamp/www/FutbolAppPhp/model/permisos.php</file>
+            <file>file:/C:/wamp/www/FutbolAppPhp/php/seguridad/roles.php</file>
+            <file>file:/C:/wamp/www/FutbolAppPhp/index.html</file>
         </group>
     </open-files>
 </project-private>

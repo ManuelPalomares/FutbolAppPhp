@@ -33,5 +33,14 @@ and e.codigo_rol    =b.rol";
             
         }
     }
+    
+    public function usuarioExiste($usuario){
+        $res = null;
+        $con = new conexionBD();
+        $db = $con->getConexDB();
+        $rs = $db->Execute("select * from usuarios where usuario='$usuario'");
+        $res = $rs->getRows();
+        return $res;
+    }
 }
 ?>
