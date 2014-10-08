@@ -22,8 +22,14 @@ $descripcion = $datos["descripcion"];
 /*TODO Operaciones con las variables POST O GET*/
 //crear clase Roles
 $roles = new Roles($usuario, $accion, 13);
-$rs = $roles->guardarRol($descripcion);
-print_r($rs);
+if($accion == "GUARDAR"){
+    $rs = $roles->guardarRol($descripcion);
+}
+
+if($accion=="CONSULTAR"){
+    $roles->consultarRolesJson();
+}
+
 
 
 ?>
