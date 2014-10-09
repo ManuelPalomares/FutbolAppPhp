@@ -24,6 +24,9 @@ $descripcion = $datos["descripcion"];
 $roles = new Roles($usuario, $accion, 13);
 if($accion == "GUARDAR"){
     $rs = $roles->guardarRol($descripcion);
+    
+    echo json_encode($rs);
+    exit();
 }
 
 if($accion=="CONSULTAR"){
