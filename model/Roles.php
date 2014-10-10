@@ -43,14 +43,16 @@ class Roles {
         $con = new conexionBD();
         $db = $con->getConexDB();
         $rs = $db->Execute("insert into roles values(null,'$descripcion')");
+        $id = $db->Insert_ID();
+        
         if($rs ==false){
             $res["success"] = true;
             $res["msg"] = "Error almacenando el registro ".$db->ErrorMsg();
-            
             return $res;
         }
         $res["success"] = true;
         $res["msg"] = "Se guardo el registro correctamente";
+        $res["newId"] = $id;
         return($res);
     }
 
