@@ -90,7 +90,7 @@ class Roles {
         }
          
         $res["success"] = true;
-        $res["msg"] = "Se actualizo el registro correctamente";
+        $res["msg"] = "Se elimino el registro correctamente";
         $res["newId"] = $codigo;
         return($res);
     }
