@@ -78,14 +78,17 @@ class Roles {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $rs = $db->Execute("delete roles where codigo=$codigo");
+        $sql = "delete from roles where codigo='$codigo';";
+        //echo $sql;
+        $rs = $db->Execute($sql);
         
         if($rs ==false){
             $res["success"] = true;
-            $res["msg"] = "Error actualizando el registro ".$db->ErrorMsg();
+            $res["msg"] = "Error eliminando el registro ".$db->ErrorMsg();
             $res["newId"] = $codigo;
             return $res;
         }
+         
         $res["success"] = true;
         $res["msg"] = "Se actualizo el registro correctamente";
         $res["newId"] = $codigo;
