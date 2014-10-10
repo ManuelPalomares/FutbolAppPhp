@@ -55,7 +55,43 @@ class Roles {
         $res["newId"] = $id;
         return($res);
     }
-
+   
+    public function updateRol($codigo,$descripcion){
+        $res = null;
+        $con = new conexionBD();
+        $db = $con->getConexDB();
+        $rs = $db->Execute("UPDATE roles set descripcion = '$descripcion' where codigo=$codigo");
+        
+        if($rs ==false){
+            $res["success"] = true;
+            $res["msg"] = "Error actualizando el registro ".$db->ErrorMsg();
+            $res["newId"] = $codigo;
+            return $res;
+        }
+        $res["success"] = true;
+        $res["msg"] = "Se actualizo el registro correctamente";
+        $res["newId"] = $codigo;
+        return($res);
+    }
+    
+    public function eliminarRol($codigo){
+        $res = null;
+        $con = new conexionBD();
+        $db = $con->getConexDB();
+        $rs = $db->Execute("delete roles where codigo=$codigo");
+        
+        if($rs ==false){
+            $res["success"] = true;
+            $res["msg"] = "Error actualizando el registro ".$db->ErrorMsg();
+            $res["newId"] = $codigo;
+            return $res;
+        }
+        $res["success"] = true;
+        $res["msg"] = "Se actualizo el registro correctamente";
+        $res["newId"] = $codigo;
+        return($res);
+    }
+    
     public function consultarRoles() {
         
         

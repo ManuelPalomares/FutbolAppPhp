@@ -29,10 +29,20 @@ if($accion == "GUARDAR"){
     exit();
 }
 
+if($accion =="ACTUALIZAR"){
+    $rs = $roles->updateRol($codigo, $descripcion);
+    echo json_encode($rs);
+    exit(); 
+}
+
+if($accion =="ELIMINAR"){
+    $rs = $roles->eliminarRol($codigo);
+    echo json_encode($rs);
+    exit(); 
+}
+
 if($accion=="CONSULTAR"){
     $roles->consultarRolesJson();
 }
-
-
 
 ?>
