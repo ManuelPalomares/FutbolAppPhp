@@ -10,7 +10,7 @@ require_once(dirname(dirname(__FILE__)) . "/libs/utf8Array.php");
 
 define('ADODB_FETCH_ASSOC',2);
 
-class Citas {
+class CitasDeportivas {
     /* En todas las clases PHP de maestros vamos a dejar el siguiente codigo */
 
     public function __construct($usuario, $accion, $opcion) {
@@ -42,7 +42,7 @@ class Citas {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $rs = $db->Execute("insert into eventos_deportivos values(null,'$titulo_evento','$fecha_inicio','$fecha_fin','$estado_evento','$descripcion_evento')");
+        $rs = $db->Execute("insert into eventos_deportivos values(null,'$titulo_evento','$fecha_inicio','$fecha_fin','$descripcion_evento','$estado_evento')");
         $id = $db->Insert_ID();
         
         if($rs ==false){
