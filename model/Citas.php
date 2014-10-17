@@ -10,7 +10,7 @@ require_once(dirname(dirname(__FILE__)) . "/libs/utf8Array.php");
 
 define('ADODB_FETCH_ASSOC',2);
 
-class CitasDeportivas {
+class CitasDeportivas{
     /* En todas las clases PHP de maestros vamos a dejar el siguiente codigo */
 
     public function __construct($usuario, $accion, $opcion) {
@@ -62,7 +62,9 @@ class CitasDeportivas {
         $db = $con->getConexDB();
         $rs = $db->Execute("UPDATE eventos_deportivos set titulo_evento = '$titulo_evento',"
                 . "fecha_inicio ='$fecha_inicio',"
-                . "fecha_fin = '$fecha_fin'"
+                . "fecha_fin = '$fecha_fin',"
+                . "descripcion_evento = '$descripcion_evento'"
+                . "estado_evento    = '$estado_evento'"
                 . "where codigo=$codigo");
         
         if($rs ==false){
@@ -98,14 +100,14 @@ class CitasDeportivas {
         return($res);
     }
     
-    public function consultarRoles() {
+    public function consultarCitasDeportivas($start=0,$end=50) {
         
         
         
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql = "SELECT codigo,descripcion FROM roles;";
+        $sql = "SELECT codigo,titulo_evento,fecha_inicio,fecha_fin,descripcion_evento,estado FROM eventos_deportivos LIMIT $start, $end ;";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
         
         $rs = $db->Execute($sql);

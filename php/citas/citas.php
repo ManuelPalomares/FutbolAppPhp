@@ -20,33 +20,36 @@ $titulo_evento = $datos["titulo_evento"];
 $fecha_inicio = $datos["fecha_inicio"]." ".$datos["hora1"];
 $fecha_fin = $datos["fecha_fin"]." ".$datos["hora2"];
 $estado_evento = $datos["estado_evento"];
+$start       = $datos["start"];
+$end         = $datos["end"];
+
 $descripcion_evento = isset($datos["descripcion_evento"]) ? html_entity_decode(htmlentities($datos["descripcion_evento"], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'ISO-8859-1') : "";
 
 
 
 /*TODO Operaciones con las variables POST O GET*/
 //crear clase Roles
-$roles = new CitasDeportivas($usuario, $accion, 6);
+$citaObj = new CitasDeportivas($usuario, $accion, 6);
 if($accion == "GUARDAR"){
-    $rs = $roles->guardarCita($titulo_evento,$fecha_inicio,$fecha_fin,$estado_evento,$descripcion_evento);
+    $rs = $citaObj->guardarCita($titulo_evento,$fecha_inicio,$fecha_fin,$estado_evento,$descripcion_evento);
     echo json_encode($rs);
     exit();
 }
 
 if($accion =="ACTUALIZAR"){
-    $rs = $roles->updateRol($codigo, $descripcion);
+    $rs = $citaObj->updateCita($codigo,$titulo_evento,$fecha_inicio,$fecha_fin,$estado_evento,$descripcion_evento);
     echo json_encode($rs);
     exit(); 
 }
 
 if($accion =="ELIMINAR"){
-    $rs = $roles->eliminarRol($codigo);
+    $rs = $citaObj->eliminarRol($codigo);
     echo json_encode($rs);
     exit(); 
 }
 
 if($accion=="CONSULTAR"){
-    $roles->consultarRolesJson();
+    $citaObj->consultarCitasDeportivas($start,$end);
 }
 
 ?>
