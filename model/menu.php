@@ -1,6 +1,7 @@
 <?php
 
 require_once(dirname(dirname(__FILE__))."/libs/conexionBD.php");
+require_once(dirname(dirname(__FILE__)) . "/libs/utf8Array.php");
 
 class MenuApp {
     
@@ -9,8 +10,9 @@ class MenuApp {
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
         $sql  = "SELECT * FROM modulosusuario WHERE USUARIO = '$usuario'";
+        //echo $sql;
         $rs = $db->Execute($sql);      
-        $res = $rs->getRows();
+        $res = utf8Array::Utf8_string_array_encode($rs->getRows());
         return $res;
     }
     
@@ -19,9 +21,10 @@ class MenuApp {
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
         $sql  = "SELECT * FROM menusopciones WHERE CODIGO_PADRE = '$opcion' and usuario='$usuario'";
-        
+        //echo $sql;
+        //exit();
         $rs = $db->Execute($sql);      
-        $res = $rs->getRows();
+        $res = utf8Array::Utf8_string_array_encode($rs->getRows());
         return $res;
     }
     
@@ -34,7 +37,10 @@ class MenuApp {
             $value["SUBMENUS"] = $this->menusSubmenus($usuario, $value["CODIGO"]);
             $result["modulos"][$key]=$value;
         }
+        
         echo json_encode($result);
+       
+   
     }
     
     public function menuSubMenusJson($usuario,$opcion){
