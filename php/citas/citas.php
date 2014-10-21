@@ -43,13 +43,13 @@ if($accion =="ACTUALIZAR"){
 }
 
 if($accion =="ELIMINAR"){
-    $rs = $citaObj->eliminarRol($codigo);
+    $rs = $citaObj->eliminarCita($codigo);
     echo json_encode($rs);
     exit(); 
 }
 
 if($accion=="CONSULTAR"){
-    $citaObj->consultarCitasDeportivas($start,$end);
+    $citaObj->consultarCitasJson($start,$end);
 }
 
 ?>

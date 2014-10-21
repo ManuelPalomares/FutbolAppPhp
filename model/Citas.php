@@ -60,12 +60,14 @@ class CitasDeportivas{
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $rs = $db->Execute("UPDATE eventos_deportivos set titulo_evento = '$titulo_evento',"
+        $sql = "UPDATE eventos_deportivos set titulo_evento = '$titulo_evento',"
                 . "fecha_inicio ='$fecha_inicio',"
                 . "fecha_fin = '$fecha_fin',"
-                . "descripcion_evento = '$descripcion_evento'"
+                . "descripcion_evento = '$descripcion_evento',"
                 . "estado_evento    = '$estado_evento'"
-                . "where codigo=$codigo");
+                . "where codigo=$codigo";
+        //echo $sql;
+        $rs = $db->Execute($sql);
         
         if($rs ==false){
             $res["success"] = true;
@@ -79,7 +81,7 @@ class CitasDeportivas{
         return($res);
     }
     
-    public function eliminarRol($codigo){
+    public function eliminarCita($codigo){
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
@@ -107,17 +109,17 @@ class CitasDeportivas{
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql = "SELECT codigo,titulo_evento,fecha_inicio,fecha_fin,descripcion_evento,estado FROM eventos_deportivos LIMIT $start, $end ;";
+        $sql = "SELECT codigo,titulo_evento,DATE_FORMAT(fecha_inicio,'%Y/%m/%d') fecha_inicio,DATE_FORMAT(fecha_fin,'%Y/%m/%d') fecha_fin,descripcion_evento,estado_evento,DATE_FORMAT(fecha_inicio, '%H:%i') hora1,DATE_FORMAT(fecha_fin, '%H:%i') hora2 FROM eventos_deportivos LIMIT $start, $end ;";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
-        
+        //echo $sql;
         $rs = $db->Execute($sql);
         $res = $rs->getrows();
         return $res;
     }
 
-    public function consultarRolesJson() {
+    public function consultarCitasJson($start,$end) {
         $result = null;
-        $result["roles"] = utf8Array::Utf8_string_array_encode($this->consultarRoles());
+        $result["citas"] = utf8Array::Utf8_string_array_encode($this->consultarCitasDeportivas());
         $result["totalRows"] = sizeof($result["roles"]);
         echo json_encode($result);
     }
