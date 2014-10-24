@@ -61,7 +61,7 @@ class Suscriptores {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $rs = $db->Execute("UPDATE roles set descripcion = '$descripcion' where codigo=$codigo");
+        $rs = $db->Execute("UPDATE suscriptor set estado = '$estado', parentesco = '$parentesco', tipo_documento = '$tipo_documento', numero_documento = '$numero_documento', nombres = '$nombres', apellidos = '$apellidos', apellidos = '$telefono', celular = '$celular', email = '$email',  parentesco = '$parentesco2', tipo_documento2 = '$tipo_documento2', numero_documento2 = '$numero_documento2', nombres2 = '$nombres2', apellidos2 = '$apellidos2', celular2 = '$celular2', email = '$email2' where codigo=$codigo");
 
         if ($rs == false) {
             $res["success"] = true;
@@ -71,21 +71,42 @@ class Suscriptores {
         }
         $res["success"] = true;
         $res["msg"] = "Se actualizo el registro correctamente";
-        $res["newId"] = $codigo;
+//        $res["newId"] = $codigo;
         return($res);
     }
 
+    public function consultarSuscriptoresListaValores() {
+        $res = null;
+        $con1 = new conexionBD();
+        $db = $con1->getConexDB();
+        $sql = "SELECT codigo,CONCAT(nombres,' ',apellidos,' (',numero_documento,')') nombrescompletos FROM suscriptores ORDER BY NOMBRES ASC;";
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+        
+        $rs = $db->Execute($sql);
+        $res = $rs->getrows();
+        return $res;
+    }
+
+    public function consultarSuscriptoresListaValoresJson() {
+        $result = null;
+        $result["suscriptores"] = utf8Array::Utf8_string_array_encode($this->consultarSuscriptoresListaValores());
+        $result["totalRows"] = sizeof($result["ciudades"]);
+        echo json_encode($result);
+    }
+
+    
+    /*
     public function eliminarRol($codigo) {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $sql = "delete from roles where codigo='$codigo';";
+        $sql = "update suscriptores set estado = 'I' where codigo='$codigo';";
         //echo $sql;
         $rs = $db->Execute($sql);
 
         if ($rs == false) {
             $res["success"] = true;
-            $res["msg"] = "Error eliminando el registro " . $db->ErrorMsg();
+            $res["msg"] = "Inactivando el sus eliminando el registro " . $db->ErrorMsg();
             $res["newId"] = $codigo;
             return $res;
         }
@@ -97,9 +118,6 @@ class Suscriptores {
     }
 
     public function consultarRoles() {
-
-
-
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
@@ -117,7 +135,7 @@ class Suscriptores {
         $result["totalRows"] = sizeof($result["roles"]);
         echo json_encode($result);
     }
-
+*/
 }
 
 ?>
