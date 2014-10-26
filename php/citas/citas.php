@@ -11,6 +11,7 @@ require_once ("../../model/Citas.php");
 /* Controla el acceso a usuarios externos no logueados */
 $session = new SessionApp();
 $usuario = $session->isRegisterUserJson(false);
+$opcion_actual = $session->getOpcionActual();
 
 $datos = $_REQUEST;
 
@@ -29,7 +30,7 @@ $descripcion_evento = isset($datos["descripcion_evento"]) ? html_entity_decode(h
 
 /*TODO Operaciones con las variables POST O GET*/
 //crear clase Roles
-$citaObj = new CitasDeportivas($usuario, $accion, 6);
+$citaObj = new CitasDeportivas($usuario, $accion, $opcion_actual);
 if($accion == "GUARDAR"){
     $rs = $citaObj->guardarCita($titulo_evento,$fecha_inicio,$fecha_fin,$estado_evento,$descripcion_evento);
     echo json_encode($rs);
@@ -50,6 +51,10 @@ if($accion =="ELIMINAR"){
 
 if($accion=="CONSULTAR"){
     $citaObj->consultarCitasJson($start,$end);
+}
+
+if($accion=="ENVIAREMAILCITA"){
+    $citaObj->enviarEmailCita($codigo);
 }
 
 ?>

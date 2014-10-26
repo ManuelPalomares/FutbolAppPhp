@@ -11,7 +11,7 @@ require_once ("../../model/Roles.php");
 /* Controla el acceso a usuarios externos no logueados */
 $session = new SessionApp();
 $usuario = $session->isRegisterUserJson(false);
-
+$opcion_actual = $session->getOpcionActual();
 $datos = $_REQUEST;
 
 $accion= $datos["accion"];
@@ -21,7 +21,7 @@ $descripcion = $datos["descripcion"];
 
 /*TODO Operaciones con las variables POST O GET*/
 //crear clase Roles
-$roles = new Roles($usuario, $accion, 13);
+$roles = new Roles($usuario, $accion, $opcion_actual);
 if($accion == "GUARDAR"){
     $rs = $roles->guardarRol($descripcion);
     

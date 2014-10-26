@@ -37,5 +37,9 @@ class SessionApp {
                 
         }
     }
+    
+    public function getOpcionActual(){
+        return $_SESSION["APP_WEBMAPSOFT.COM"]["OPCION_ACTUAL"];
+    }
 
 }

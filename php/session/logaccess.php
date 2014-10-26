@@ -13,11 +13,11 @@ $datos = $_REQUEST;
 $accion = $datos["accion"];
 $usuario_nombre = $datos['usuario'];
 $password = $datos['password'];
+$opcion = $datos["opcionMenu"];
 
-if($accion=="CERRARSESION"){
+if ($accion == "CERRARSESION") {
     session_destroy();
-    echo json_encode(array("success"=>true)); 
-    
+    echo json_encode(array("success" => true));
 }
 if ($accion == "CONECTARSE") {
     $usuarios = new Usuarios($usuario_nombre, $accion, 1);
@@ -43,5 +43,12 @@ if ($accion == "CONECTARSE") {
         echo json_encode($res);
         exit();
     }
+}
+
+if ($accion == "REGISTRAROPCIONES") {
+    $_SESSION["APP_WEBMAPSOFT.COM"]["OPCION_ACTUAL"] = $opcion;
+    $res["success"] = true;
+    echo json_encode($res);
+    exit();
 }
 ?>
