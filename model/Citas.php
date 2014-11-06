@@ -119,6 +119,18 @@ class CitasDeportivas {
         return $res;
     }
     
+    public function consultarAgendaDeportivaCita($codigo_citaDeportiva,$tipo='J'){
+        $res = null;
+        $con1 = new conexionBD();
+        $db = $con1->getConexDB();
+        $sql = "SELECT * from vw_agendadosEventos where evento =$codigo and tipo ='$tipo';";
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+        //echo $sql;
+        $rs = $db->Execute($sql);
+        $res = $rs->getrows();
+        return $res;
+    }
+    
     public function consultarCitasDeportivasPorId($codigo) {
 
         $res = null;
@@ -174,19 +186,19 @@ class CitasDeportivas {
         $mail->SMTPAuth = true;
 
 //Username to use for SMTP authentication - use full email address for gmail
-        $mail->Username = "manuel936@gmail.com";
+        $mail->Username = "diegochampionsfc@gmail.com";
 
 //Password to use for SMTP authentication
-        $mail->Password = "";
+        $mail->Password = "Ch4mpi0nsfc_2014";
 
 //Set who the message is to be sent from
-        $mail->setFrom('manuel936@gmail.com', 'Manue Palomares');
+        $mail->setFrom('diegochampionsfc@gmail.com', 'Escuela de Futbol Champions');
 
 //Set an alternative reply-to address
         //$mail->addReplyTo('aymer.com', 'First Last');
 
 //Set who the message is to be sent to
-        $mail->addAddress('aiobando@gmail.com', 'Aymer');
+        //$mail->addAddress('aiobando@gmail.com', 'Aymer');
         $mail->addAddress('manuel936@gmail.com', 'Manuel');
 
 //Set the subject line
