@@ -123,9 +123,9 @@ class CitasDeportivas {
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql = "SELECT * from vw_agendadosEventos where evento =$codigo and tipo ='$tipo';";
+        $sql = "SELECT * from vw_agendadosEventos where evento =$codigo_citaDeportiva and tipo like '%$tipo%';";
+        
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
-        //echo $sql;
         $rs = $db->Execute($sql);
         $res = $rs->getrows();
         return $res;
@@ -152,10 +152,24 @@ class CitasDeportivas {
     }
 
     public function enviarEmailCita($codigo =0) {
+        $agendados = null;
+        
         $datos = $this->consultarCitasDeportivasPorId($codigo);
         $datos = $datos[0];
         $titulo_cita = $datos["titulo_evento"];
         $descripcion_evento = $datos["descripcion_evento"];
+        
+        
+        $agendados = CitasDeportivas::consultarAgendaDeportivaCita($codigo,'');
+        //echo sizeof($agendados);
+        
+        if(sizeof($agendados)== 0){
+            $res["success"] = true;
+            $res["permiso"] = false;
+            $res["mensaje_error"] = "No existen registros de jugadores asociados al evento ingrese los jugadores";
+            echo json_encode($res);
+            exit();
+        }
         
         date_default_timezone_set('Etc/UTC');
         //Create a new PHPMailer instance
