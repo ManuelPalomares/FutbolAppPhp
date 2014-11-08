@@ -37,12 +37,12 @@ class Jugadores {
         }
     }
 
-    public function guardarJugador($fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor) {
+    public function guardarJugador($fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor,$observaciones) {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $sql = "insert into jugadores (codigo,fecha_ingreso,estado,tipo_documento,doc_identidad,fecha_expedicion,nombres,apellidos,fecha_nacimiento,codigo_lugar_nacimiento,tipo_sangre,direccion,barrio,telefono,celular,email,bb_pin,colegio,grado,genero,seguridad_social,codigo_categoria,codigo_suscriptor) values (null,SYSDATE(),'$estado','$tipo_documento','$doc_identidad','$fecha_expedicion','$nombres','$apellidos','$fecha_nacimiento','$codigo_lugar_nacimiento','$tipo_sangre','$direccion','$barrio','$telefono','$celular','$email','$bb_pin','$colegio','$grado','$genero','$seguridad_social','$codigo_categoria','$codigo_suscriptor')";
-        echo $sql;
+        $sql = "insert into jugadores (codigo,fecha_ingreso,estado,tipo_documento,doc_identidad,fecha_expedicion,nombres,apellidos,fecha_nacimiento,codigo_lugar_nacimiento,tipo_sangre,direccion,barrio,telefono,celular,email,bb_pin,colegio,grado,genero,seguridad_social,codigo_categoria,codigo_suscriptor, observaciones) values (null,SYSDATE(),'$estado','$tipo_documento','$doc_identidad','$fecha_expedicion','$nombres','$apellidos','$fecha_nacimiento','$codigo_lugar_nacimiento','$tipo_sangre','$direccion','$barrio','$telefono','$celular','$email','$bb_pin','$colegio','$grado','$genero','$seguridad_social','$codigo_categoria','$codigo_suscriptor','$observaciones')";
+        //echo $sql;
         $rs = $db->Execute($sql);
         $id = $db->Insert_ID();
 
@@ -57,33 +57,44 @@ class Jugadores {
         return($res);
     }
 
-    public function consultarJugadoresJson($start,$end) {
+    public function consultarJugadoresJson($start,$end,$categoria=0) {
         $result = null;
-        $result["jugadores"] = utf8Array::Utf8_string_array_encode($this->consultarJugadores($start,$end));
-        $result["totalRows"] = sizeof($result["jugadores"]);
+        $res = $this->consultarJugadores($start,$end,$categoria);
+        
+        $result["jugadores"] = utf8Array::Utf8_string_array_encode($res["datos"]);
+        $result["totalRows"] = $res["totalRows"];
         echo json_encode($result);
     }
 
-    public function consultarJugadores($start=0,$end=50) {
+    public function consultarJugadores($start=0,$end=50,$categoria=0) {
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql = "SELECT j.*,CONCAT(j.nombres,' ',j.apellidos) nombre_completo FROM jugadores j LIMIT $start,$end;";
-        //echo $sql;
-        
+        $totalRows = null;
+        $datos     =null;
+        $sql1 = "SELECT count(1) cantidad FROM jugadores j where codigo_categoria=$categoria";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
 
-        $rs = $db->Execute($sql);
+        $rs = $db->Execute($sql1);
         $res = $rs->getrows();
-        return $res;
+        $totalRows = $res[0]["cantidad"];
+        
+        $sql2 = "SELECT j.*,CONCAT(j.nombres,' ',j.apellidos) nombre_completo FROM jugadores j where codigo_categoria=$categoria LIMIT $start,$end;";
+                
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+
+        $rs = $db->Execute($sql2);
+        $res = $rs->getrows();
+        $datos = $res;
+        return array("datos"=>$datos,"totalRows"=>$totalRows);
     }
 
-    /*
-      public function actualizarSuscriptor($codigo, $fecha_ingreso, $suscriptor, $estado, $parentesco, $tipo_documento, $numero_documento, $nombres, $apellidos, $telefono, $celular, $email, $parentesco2, $tipo_documento2, $numero_documento2, $nombres2, $apellidos2, $celular2, $email2) {
+    
+      public function actualizarJugador($codigo, $fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones) {
       $res = null;
       $con = new conexionBD();
       $db = $con->getConexDB();
-      $rs = $db->Execute("UPDATE suscriptor set estado = '$estado', parentesco = '$parentesco', tipo_documento = '$tipo_documento', numero_documento = '$numero_documento', nombres = '$nombres', apellidos = '$apellidos', apellidos = '$telefono', celular = '$celular', email = '$email',  parentesco = '$parentesco2', tipo_documento2 = '$tipo_documento2', numero_documento2 = '$numero_documento2', nombres2 = '$nombres2', apellidos2 = '$apellidos2', celular2 = '$celular2', email = '$email2' where codigo=$codigo");
+      $rs = $db->Execute("UPDATE jugadores set estado='$estado', tipo_documento='$tipo_documento', doc_identidad='$doc_identidad', fecha_expedicion='$fecha_expedicion', nombres='$nombres', apellidos='$apellidos', fecha_nacimiento='$fecha_nacimiento', codigo_lugar_nacimiento='$codigo_lugar_nacimiento', tipo_sangre='$tipo_sangre', direccion='$direccion', barrio='$barrio', telefono='$telefono', celular='$celular', email='$email', bb_pin='$bb_pin', colegio='$colegio', grado='$grado', genero='$genero', seguridad_social='$seguridad_social', codigo_categoria=$codigo_categoria, codigo_suscriptor=$codigo_suscriptor, observaciones='$observaciones' where codigo=$codigo");
 
       if ($rs == false) {
       $res["success"] = true;
@@ -96,7 +107,7 @@ class Jugadores {
       //        $res["newId"] = $codigo;
       return($res);
       }
-
+/*
       public function eliminarRol($codigo) {
       $res = null;
       $con = new conexionBD();
