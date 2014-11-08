@@ -61,7 +61,7 @@ class Suscriptores {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $rs = $db->Execute("UPDATE suscriptor set estado = '$estado', parentesco = '$parentesco', tipo_documento = '$tipo_documento', numero_documento = '$numero_documento', nombres = '$nombres', apellidos = '$apellidos', apellidos = '$telefono', celular = '$celular', email = '$email',  parentesco = '$parentesco2', tipo_documento2 = '$tipo_documento2', numero_documento2 = '$numero_documento2', nombres2 = '$nombres2', apellidos2 = '$apellidos2', celular2 = '$celular2', email = '$email2' where codigo=$codigo");
+        $rs = $db->Execute("UPDATE suscriptor set estado = '$estado', parentesco = '$parentesco', tipo_documento = '$tipo_documento', numero_documento = '$numero_documento', nombres = '$nombres', apellidos = '$apellidos', apellidos = '$telefono', celular = '$celular', email = '$email',  parentesco2 = '$parentesco2', tipo_documento2 = '$tipo_documento2', numero_documento2 = '$numero_documento2', nombres2 = '$nombres2', apellidos2 = '$apellidos2', celular2 = '$celular2', email = '$email2' where codigo=$codigo");
 
         if ($rs == false) {
             $res["success"] = true;

@@ -11,7 +11,7 @@ require_once ("../../model/Jugadores.php");
 /* Controla el acceso a usuarios externos no logueados */
 $session = new SessionApp();
 $usuario = $session->isRegisterUserJson(false);
-
+$opcion_actual = $session->getOpcionActual();
 $datos = $_REQUEST;
 
 $accion= $datos["accion"];
@@ -38,31 +38,32 @@ $genero=$datos["genero"];
 $seguridad_social=$datos["email"];
 $codigo_categoria=$datos["codigo_categoria"];
 $codigo_suscriptor=$datos["codigo_suscriptor"];
-
+$observaciones=$datos["observaciones"];
 
 //para el paginador Extjs
 $start       = $datos["start"];
 $end         = $datos["limit"];
 
-
+//parametros de la grilla
+$categoria = $datos["categoria"];
 
 /*TODO Operaciones con las variables POST O GET*/
 //crear clase Roles
-$jugador = new Jugadores($usuario, $accion, 14);
+$jugador = new Jugadores($usuario, $accion, $opcion_actual);
 if($accion == "GUARDAR"){
-    $rs = $jugador->guardarJugador($fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor);    
+    $rs = $jugador->guardarJugador($fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones);    
     echo json_encode($rs);
     exit();
 }
 
 if($accion =="ACTUALIZAR"){
-    $rs = $jugador->actualizarJugador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor);
+    $rs = $jugador->actualizarJugador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones);
     echo json_encode($rs);
     exit(); 
 }
 
 if($accion == 'CONSULTAR'){
-       $jugador->consultarJugadoresJson($start,$end);
+       $jugador->consultarJugadoresJson($start,$end,$categoria);
 }
 
 
