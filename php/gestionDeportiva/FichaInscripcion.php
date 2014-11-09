@@ -39,6 +39,7 @@ $seguridad_social=$datos["email"];
 $codigo_categoria=$datos["codigo_categoria"];
 $codigo_suscriptor=$datos["codigo_suscriptor"];
 $observaciones=$datos["observaciones"];
+$imagen_jugador = $_FILES["imagenJugador"];
 
 //para el paginador Extjs
 $start       = $datos["start"];
@@ -66,6 +67,10 @@ if($accion == 'CONSULTAR'){
        $jugador->consultarJugadoresJson($start,$end,$categoria);
 }
 
+if($accion=='CARGARFOTO'){
+    $jugador->cargarFoto($imagen_jugador);
+    
+}
 
 
 ?>

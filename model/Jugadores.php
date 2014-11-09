@@ -6,6 +6,7 @@ require_once(dirname(dirname(__FILE__)) . "/libs/conexionBD.php");
 require_once(dirname(__FILE__) . "/permisos.php");
 
 require_once(dirname(dirname(__FILE__)) . "/libs/utf8Array.php");
+require_once(dirname(dirname(__FILE__)) . "/libs/fileUpload.php");
 
 define('ADODB_FETCH_ASSOC', 2);
 
@@ -107,47 +108,29 @@ class Jugadores {
       //        $res["newId"] = $codigo;
       return($res);
       }
-/*
-      public function eliminarRol($codigo) {
-      $res = null;
-      $con = new conexionBD();
-      $db = $con->getConexDB();
-      $sql = "update suscriptores set estado = 'I' where codigo='$codigo';";
-      //echo $sql;
-      $rs = $db->Execute($sql);
-
-      if ($rs == false) {
-      $res["success"] = true;
-      $res["msg"] = "Inactivando el sus eliminando el registro " . $db->ErrorMsg();
-      $res["newId"] = $codigo;
-      return $res;
+      
+      public function cargarFoto($foto){
+          $resFile = null;
+          $res = "";
+          $fileUp = new fileUpload();
+          $n = rand(1,100000);
+          $nameLoaded = "foto_"+$n;
+          $resFile = $fileUp->cargarArchivo($foto, "fotosjugadores", $nameLoaded);
+          
+          if ($resFile == false){
+            $res["success"] = true;
+            $res["permiso"] = false;
+            $res["mensaje_error"] = "Error cargando el archivo de imagen vuelva intentar de nuevo";
+            echo json_encode($res);
+            exit();
+          }
+          
+          $res["success"] = true;
+          $res["foto"] = $resFile;
+          $res["msg"] = "Foto cargada con exito";
+          echo json_encode($res);
+          
       }
-
-      $res["success"] = true;
-      $res["msg"] = "Se elimino el registro correctamente ";
-      $res["newId"] = $codigo;
-      return($res);
-      }
-
-      public function consultarRoles() {
-      $res = null;
-      $con1 = new conexionBD();
-      $db = $con1->getConexDB();
-      $sql = "SELECT codigo,descripcion FROM roles;";
-      $db->SetFetchMode(ADODB_FETCH_ASSOC);
-
-      $rs = $db->Execute($sql);
-      $res = $rs->getrows();
-      return $res;
-      }
-
-      public function consultarRolesJson() {
-      $result = null;
-      $result["roles"] = utf8Array::Utf8_string_array_encode($this->consultarRoles());
-      $result["totalRows"] = sizeof($result["roles"]);
-      echo json_encode($result);
-      }
-     */
 }
 
 ?>
