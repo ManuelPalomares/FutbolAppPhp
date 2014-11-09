@@ -38,11 +38,25 @@ class Jugadores {
         }
     }
 
-    public function guardarJugador($fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor,$observaciones) {
+    public function guardarJugador($fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor,$observaciones,$foto="") {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $sql = "insert into jugadores (codigo,fecha_ingreso,estado,tipo_documento,doc_identidad,fecha_expedicion,nombres,apellidos,fecha_nacimiento,codigo_lugar_nacimiento,tipo_sangre,direccion,barrio,telefono,celular,email,bb_pin,colegio,grado,genero,seguridad_social,codigo_categoria,codigo_suscriptor, observaciones) values (null,SYSDATE(),'$estado','$tipo_documento','$doc_identidad','$fecha_expedicion','$nombres','$apellidos','$fecha_nacimiento','$codigo_lugar_nacimiento','$tipo_sangre','$direccion','$barrio','$telefono','$celular','$email','$bb_pin','$colegio','$grado','$genero','$seguridad_social','$codigo_categoria','$codigo_suscriptor','$observaciones')";
+        $sql = "insert into jugadores(codigo,"
+                . "fecha_ingreso,estado,tipo_documento,"
+                . "doc_identidad,fecha_expedicion,nombres,"
+                . "apellidos,fecha_nacimiento,codigo_lugar_nacimiento,"
+                . "tipo_sangre,direccion,barrio,telefono,"
+                . "celular,email,bb_pin,colegio,"
+                . "grado,genero,seguridad_social,"
+                . "codigo_categoria,codigo_suscriptor,"
+                . "observaciones,foto) "
+                . "values (null,SYSDATE(),'$estado','$tipo_documento',"
+                . "'$doc_identidad','$fecha_expedicion','$nombres',"
+                . "'$apellidos','$fecha_nacimiento','$codigo_lugar_nacimiento',"
+                . "'$tipo_sangre','$direccion','$barrio','$telefono','$celular',"
+                . "'$email','$bb_pin','$colegio','$grado','$genero','$seguridad_social',"
+                . "'$codigo_categoria','$codigo_suscriptor','$observaciones','$foto')";
         //echo $sql;
         $rs = $db->Execute($sql);
         $id = $db->Insert_ID();
@@ -64,6 +78,8 @@ class Jugadores {
         
         $result["jugadores"] = utf8Array::Utf8_string_array_encode($res["datos"]);
         $result["totalRows"] = $res["totalRows"];
+        //print_r($result);
+        
         echo json_encode($result);
     }
 
@@ -80,8 +96,34 @@ class Jugadores {
         $res = $rs->getrows();
         $totalRows = $res[0]["cantidad"];
         
-        $sql2 = "SELECT j.*,CONCAT(j.nombres,' ',j.apellidos) nombre_completo FROM jugadores j where codigo_categoria=$categoria LIMIT $start,$end;";
-                
+        $sql2 = "SELECT codigo,"
+                . "DATE_FORMAT(fecha_ingreso,'%Y/%m/%d') fecha_ingreso,"
+                . "estado,tipo_documento,"
+                . "doc_identidad,"
+                . "DATE_FORMAT(fecha_expedicion,'%Y/%m/%d') fecha_expedicion,"
+                . "nombres,"
+                . "apellidos,"
+                . "DATE_FORMAT(j.fecha_nacimiento,'%Y/%m/%d') fecha_nacimiento,"
+                . "codigo_lugar_nacimiento,"
+                . "tipo_sangre,"
+                . "direccion,"
+                . "barrio,"
+                . "telefono,"
+                . "celular,"
+                . "email,"
+                . "bb_pin,"
+                . "colegio,"
+                . "grado,"
+                . "genero"
+                . ",seguridad_"
+                . "social,"
+                . "codigo_categoria,"
+                . "codigo_suscriptor,"
+                . " observaciones,"
+                . "foto,"
+                . "CONCAT(j.nombres,' ',j.apellidos) nombre_completo "
+                . "FROM jugadores j where codigo_categoria=$categoria LIMIT $start,$end;";
+                //echo $sql2;
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
 
         $rs = $db->Execute($sql2);
@@ -91,12 +133,38 @@ class Jugadores {
     }
 
     
-      public function actualizarJugador($codigo, $fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones) {
+      public function actualizarJugador($codigo, $fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones,$foto) {
       $res = null;
       $con = new conexionBD();
       $db = $con->getConexDB();
-      $rs = $db->Execute("UPDATE jugadores set estado='$estado', tipo_documento='$tipo_documento', doc_identidad='$doc_identidad', fecha_expedicion='$fecha_expedicion', nombres='$nombres', apellidos='$apellidos', fecha_nacimiento='$fecha_nacimiento', codigo_lugar_nacimiento='$codigo_lugar_nacimiento', tipo_sangre='$tipo_sangre', direccion='$direccion', barrio='$barrio', telefono='$telefono', celular='$celular', email='$email', bb_pin='$bb_pin', colegio='$colegio', grado='$grado', genero='$genero', seguridad_social='$seguridad_social', codigo_categoria=$codigo_categoria, codigo_suscriptor=$codigo_suscriptor, observaciones='$observaciones' where codigo=$codigo");
-
+      $sql = "UPDATE jugadores "
+              . "set estado='$estado', "
+              . "tipo_documento='$tipo_documento', "
+              . "doc_identidad='$doc_identidad',"
+              . "fecha_expedicion='$fecha_expedicion', "
+              . "fecha_nacimiento='$fecha_nacimiento',"
+              . "nombres='$nombres', "
+              . "apellidos='$apellidos', "
+              . "codigo_lugar_nacimiento='$codigo_lugar_nacimiento', "
+              . "tipo_sangre='$tipo_sangre', "
+              . "direccion='$direccion', "
+              . "barrio='$barrio', "
+              . "telefono='$telefono', "
+              . "celular='$celular', "
+              . "email='$email', "
+              . "bb_pin='$bb_pin', "
+              . "colegio='$colegio', "
+              . "grado='$grado', "
+              . "genero='$genero', "
+              . "seguridad_social='$seguridad_social', "
+              . "codigo_categoria=$codigo_categoria, "
+              . "codigo_suscriptor=$codigo_suscriptor, "
+              . "observaciones='$observaciones',"
+              . "foto='$foto' "
+              . "where codigo = '$codigo'";
+      //echo $sql; 
+      $rs = $db->Execute($sql);
+      
       if ($rs == false) {
       $res["success"] = true;
       $res["msg"] = "Error actualizando el registro " . $db->ErrorMsg();

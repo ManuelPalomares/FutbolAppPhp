@@ -39,6 +39,7 @@ $seguridad_social=$datos["email"];
 $codigo_categoria=$datos["codigo_categoria"];
 $codigo_suscriptor=$datos["codigo_suscriptor"];
 $observaciones=$datos["observaciones"];
+$foto = $datos["foto"];
 $imagen_jugador = $_FILES["imagenJugador"];
 
 //para el paginador Extjs
@@ -52,13 +53,14 @@ $categoria = $datos["categoria"];
 //crear clase Roles
 $jugador = new Jugadores($usuario, $accion, $opcion_actual);
 if($accion == "GUARDAR"){
-    $rs = $jugador->guardarJugador($fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones);    
+    $rs = $jugador->guardarJugador($fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto);    
     echo json_encode($rs);
     exit();
 }
 
 if($accion =="ACTUALIZAR"){
-    $rs = $jugador->actualizarJugador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones);
+                    
+    $rs = $jugador->actualizarJugador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto);
     echo json_encode($rs);
     exit(); 
 }
