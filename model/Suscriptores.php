@@ -75,11 +75,17 @@ class Suscriptores {
         return($res);
     }
 
-    public function consultarSuscriptoresListaValores() {
+    public function consultarSuscriptoresListaValores($query="") {
+        
+        if($query !=""){
+            $query = "and CONCAT(nombres,' ',apellidos,' (',numero_documento,')') like '%$query%'";
+        }
+        
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql = "SELECT codigo,CONCAT(nombres,' ',apellidos,' (',numero_documento,')') nombrescompletos FROM suscriptores ORDER BY NOMBRES ASC;";
+        $sql = "SELECT codigo,CONCAT(nombres,' ',apellidos,' (',numero_documento,')') nombrescompletos FROM suscriptores where 1=1 $query ORDER BY NOMBRES ASC;";
+        //echo $sql;
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
         
         $rs = $db->Execute($sql);
@@ -87,10 +93,10 @@ class Suscriptores {
         return $res;
     }
 
-    public function consultarSuscriptoresListaValoresJson() {
+    public function consultarSuscriptoresListaValoresJson($query="") {
         $result = null;
-        $result["suscriptores"] = utf8Array::Utf8_string_array_encode($this->consultarSuscriptoresListaValores());
-        $result["totalRows"] = sizeof($result["ciudades"]);
+        $result["suscriptores"] = utf8Array::Utf8_string_array_encode($this->consultarSuscriptoresListaValores($query));
+        $result["totalRows"] = sizeof($result["suscriptores"]);
         echo json_encode($result);
     }
 

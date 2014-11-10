@@ -49,6 +49,8 @@ $end         = $datos["limit"];
 //parametros de la grilla
 $categoria = $datos["categoria"];
 
+$query  = $datos["query"];
+
 /*TODO Operaciones con las variables POST O GET*/
 //crear clase Roles
 $jugador = new Jugadores($usuario, $accion, $opcion_actual);
@@ -66,7 +68,7 @@ if($accion =="ACTUALIZAR"){
 }
 
 if($accion == 'CONSULTAR'){
-       $jugador->consultarJugadoresJson($start,$end,$categoria);
+       $jugador->consultarJugadoresJson($start,$end,$categoria,$query);
 }
 
 if($accion=='CARGARFOTO'){

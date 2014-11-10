@@ -111,20 +111,29 @@ class CitasDeportivas {
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
+        
+        $totalRows = null;
+        $datos     =null;
+        $sql1 = "SELECT count(1) cantidad FROM eventos_deportivos";
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+
+        $rs = $db->Execute($sql1);
+        $res = $rs->getrows();
+        $totalRows = $res[0]["cantidad"];
+        
         $sql = "SELECT codigo,titulo_evento,DATE_FORMAT(fecha_inicio,'%Y/%m/%d') fecha_inicio,DATE_FORMAT(fecha_fin,'%Y/%m/%d') fecha_fin,descripcion_evento,estado_evento,DATE_FORMAT(fecha_inicio, '%H:%i') hora1,DATE_FORMAT(fecha_fin, '%H:%i') hora2 FROM eventos_deportivos LIMIT $start, $end ;";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
         //echo $sql;
         $rs = $db->Execute($sql);
-        $res = $rs->getrows();
-        return $res;
+        $datos = $rs->getrows();
+        return array("cantidad"=>$totalRows,"datos"=>$datos);
     }
     
     public function consultarAgendaDeportivaCita($codigo_citaDeportiva,$tipo='J'){
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql = "SELECT * from vw_agendadosEventos where evento =$codigo_citaDeportiva and tipo like '%$tipo%';";
-        
+        $sql = "SELECT * from vw_agendadoseventos where evento ='$codigo_citaDeportiva' and tipo like '%$tipo%';";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
         $rs = $db->Execute($sql);
         $res = $rs->getrows();
@@ -146,8 +155,10 @@ class CitasDeportivas {
 
     public function consultarCitasJson($start, $end) {
         $result = null;
-        $result["citas"] = utf8Array::Utf8_string_array_encode($this->consultarCitasDeportivas());
-        $result["totalRows"] = sizeof($result["roles"]);
+        $resultSet = $this->consultarCitasDeportivas($start, $end);
+        
+        $result["citas"] = utf8Array::Utf8_string_array_encode($resultSet["datos"]);
+        $result["totalRows"] = $resultSet["cantidad"];
         echo json_encode($result);
     }
 
@@ -162,7 +173,7 @@ class CitasDeportivas {
         
         $agendados = CitasDeportivas::consultarAgendaDeportivaCita($codigo,'');
         //echo sizeof($agendados);
-        
+        /*
         if(sizeof($agendados)== 0){
             $res["success"] = true;
             $res["permiso"] = false;
@@ -170,6 +181,8 @@ class CitasDeportivas {
             echo json_encode($res);
             exit();
         }
+         * */
+         
         
         date_default_timezone_set('Etc/UTC');
         //Create a new PHPMailer instance
@@ -212,7 +225,7 @@ class CitasDeportivas {
         //$mail->addReplyTo('aymer.com', 'First Last');
 
 //Set who the message is to be sent to
-        //$mail->addAddress('aiobando@gmail.com', 'Aymer');
+        $mail->addAddress('aiobando@gmail.com', 'Aymer');
         $mail->addAddress('manuel936@gmail.com', 'Manuel');
 
 //Set the subject line

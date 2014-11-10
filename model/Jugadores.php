@@ -72,9 +72,9 @@ class Jugadores {
         return($res);
     }
 
-    public function consultarJugadoresJson($start,$end,$categoria=0) {
+    public function consultarJugadoresJson($start,$end,$categoria=0,$queryNombre="") {
         $result = null;
-        $res = $this->consultarJugadores($start,$end,$categoria);
+        $res = $this->consultarJugadores($start,$end,$categoria,$queryNombre);
         
         $result["jugadores"] = utf8Array::Utf8_string_array_encode($res["datos"]);
         $result["totalRows"] = $res["totalRows"];
@@ -83,15 +83,24 @@ class Jugadores {
         echo json_encode($result);
     }
 
-    public function consultarJugadores($start=0,$end=50,$categoria=0) {
+    public function consultarJugadores($start=0,$end=50,$categoria=0,$queryNombre="") {
+        
+        if($categoria !="")
+            $QueryCategoria = "and codigo_categoria=$categoria";
+        
+        if($queryNombre !="")
+            $queryNombre = "and CONCAT(nombres,' ',apellidos) like '%$queryNombre%'";
+        
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
         $totalRows = null;
         $datos     =null;
-        $sql1 = "SELECT count(1) cantidad FROM jugadores j where codigo_categoria=$categoria";
+        $sql1 = "SELECT count(1) cantidad FROM jugadores j where 1=1 $QueryCategoria $queryNombre";
+        
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
-
+        
+        
         $rs = $db->Execute($sql1);
         $res = $rs->getrows();
         $totalRows = $res[0]["cantidad"];
@@ -122,7 +131,7 @@ class Jugadores {
                 . " observaciones,"
                 . "foto,"
                 . "CONCAT(j.nombres,' ',j.apellidos) nombre_completo "
-                . "FROM jugadores j where codigo_categoria=$categoria LIMIT $start,$end;";
+                . "FROM jugadores j where 1=1 $QueryCategoria $queryNombre LIMIT $start,$end;";
                 //echo $sql2;
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
 

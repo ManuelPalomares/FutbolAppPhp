@@ -22,7 +22,7 @@ $fecha_inicio = $datos["fecha_inicio"]." ".$datos["hora1"];
 $fecha_fin = $datos["fecha_fin"]." ".$datos["hora2"];
 $estado_evento = $datos["estado_evento"];
 $start       = $datos["start"];
-$end         = $datos["end"];
+$end         = $datos["limit"];
 
 $descripcion_evento = isset($datos["descripcion_evento"]) ? html_entity_decode(htmlentities($datos["descripcion_evento"], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'ISO-8859-1') : "";
 

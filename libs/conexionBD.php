@@ -22,8 +22,10 @@ class conexionBD{
         $this->db_name = $data[0];
         fclose($fp);
         
+        
         $this->db = NewADOConnection('mysql');
         $this->db->Connect($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
+        $this->db->EXECUTE("set names 'utf8'");
     }
     
     public function getConexDB(){
