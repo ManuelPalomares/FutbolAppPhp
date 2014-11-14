@@ -64,6 +64,23 @@ class Usuarios{
         return $res;
     }
     
-    
+    public function consultarUsuarioPorNombre() {
+        $res = null;
+        $con1 = new conexionBD();
+        $db = $con1->getConexDB();
+        $sql = "SELECT codigo,nombre FROM usuarios ORDER BY nombre ASC;";
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+        
+        $rs = $db->Execute($sql);
+        $res = $rs->getrows();
+        return $res;
+    }
+
+    public function consultarUsuariosJson() {
+        $result = null;
+        $result["usuarios"] = $this->consultarUsuarios();
+        $result["totalRows"] = sizeof($result["usuarios"]);
+        echo json_encode($result);
+    }
 }
 ?>
