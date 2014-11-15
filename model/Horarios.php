@@ -54,7 +54,7 @@ class Horarios {
     
     public function consultarHorariosPorCategoriaJson($codigoCategoria) {
         $result = null;
-        $result["horarios"] = utf8Array::Utf8_string_array_encode($this->consultarHorariosPorCategoria($codigoCategoria));
+        $result["dias"] = utf8Array::Utf8_string_array_encode($this->consultarHorariosPorCategoria($codigoCategoria));
         $result["totalRows"] = sizeof($result["roles"]);
         echo json_encode($result);
     }

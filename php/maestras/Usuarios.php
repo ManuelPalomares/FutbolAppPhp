@@ -6,7 +6,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
 require_once("../include/index.php"); 
 require_once ("../../model/session.php");
-require_once ("../../model/Usuarios.php");
+require_once ("../../model/usuarios.php");
 
 /* Controla el acceso a usuarios externos no logueados */
 $session = new SessionApp();
@@ -16,8 +16,7 @@ $opcion_actual = $session->getOpcionActual();
 $datos = $_REQUEST;
 
 $accion= $datos["accion"];
-$codigo = $datos["codigo"];
-$descripcion = $datos["nombres"];
+$nombre = $datos["query"];
 
 
 /*TODO Operaciones con las variables POST O GET*/
@@ -25,7 +24,7 @@ $descripcion = $datos["nombres"];
 $usuarios = new Usuarios($usuario, $accion, $opcion_actual);
 
 if($accion=="CONSULTARUSUARIOS"){
-    $usuarios->consultarUsuariosJson();
+    $usuarios->consultarUsuarioPorNombreJson($nombre);
 }
 
 ?>

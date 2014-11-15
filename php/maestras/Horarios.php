@@ -6,7 +6,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
 require_once("../include/index.php"); 
 require_once ("../../model/session.php");
-require_once ("../../model/Suscriptores.php");
+require_once ("../../model/Horarios.php");
 
 /* Controla el acceso a usuarios externos no logueados */
 $session = new SessionApp();
