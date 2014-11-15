@@ -46,7 +46,7 @@ class Horarios {
         $sql = "SELECT h.* FROM horarios h, horarios_categoria hc "
                 . "where h.codigo = hc.codigo_horario and hc.codigo_categoria = $codigoCategoria;";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
-        
+        //echo $sql;
         $rs = $db->Execute($sql);
         $res = $rs->getrows();
         return $res;
