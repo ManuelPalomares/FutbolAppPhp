@@ -37,16 +37,20 @@ class Entrenadores {
         }
     }
     
-    public function consultarEntrenadoresListaValores($query="") {
+    public function consultarEntrenadoresListaValores($query="",$cod_entrenador="") {
         
         if($query !=""){
             $query = "and CONCAT(nombres,' ',apellidos,' (',documento_identidad,')') like '%$query%'";
         }
         
+        if($cod_entrenador !=""){
+             $query2 = "and codigo = '$cod_entrenador'";
+        }
+        
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql = "SELECT codigo,CONCAT(nombres,' ',apellidos,' (',documento_identidad,')') nombrescompletos FROM entrenadores where 1=1 $query ORDER BY NOMBRES ASC;";
+        $sql = "SELECT codigo,CONCAT(nombres,' ',apellidos,' (',documento_identidad,')') nombrescompletos FROM entrenadores where 1=1 $query $query2 ORDER BY NOMBRES ASC;";
         //echo $sql;
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
         

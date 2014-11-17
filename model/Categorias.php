@@ -39,11 +39,16 @@ class Categorias {
     }
 
    
-    public function consultarCategorias() {
+    public function consultarCategorias($codigo="") {
+        
+        if($codigo !==""){
+        $query = "and codigo = '$codigo'";
+        }
+        
         $res = null;
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql = "select codigo, CONCAT((select descripcion from categorias  t where t.codigo = a.codigo_padre),' ',a.descripcion) descripcion from categorias a where a.codigo_padre is not  null ORDER BY DESCRIPCION ASC;";
+        $sql = "select codigo, CONCAT((select descripcion from categorias  t where t.codigo = a.codigo_padre),' ',a.descripcion) descripcion from categorias a where a.codigo_padre is not  null $query ORDER BY DESCRIPCION ASC;";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
         
         $rs = $db->Execute($sql);

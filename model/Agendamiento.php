@@ -39,7 +39,12 @@ class Agendamiento {
         }
     }
     
-    public function agendar($evento,$codigoAgregar,$tipoAsgenda){
+    public function agendar($evento,$codigoAgregar,$tipoAgenda){
+        
+        $res = null;
+        $con1 = new conexionBD();
+        $db = $con1->getConexDB();
+        
         if($tipoAgenda =="J"){
             $sql = "insert into agendados_eventos(evento,jugador,suscriptor) values($evento,$codigoAgregar,null)";
         }
@@ -47,11 +52,13 @@ class Agendamiento {
         if($tipoAgenda =="S"){
             $sql = "insert into agendados_eventos(evento,jugador,suscriptor) values($evento,null,$codigoAgregar)";
         }
-        
+       
         $rs = $db->Execute($sql);
+        
         if ($rs == false) {
             $res["success"] = true;
             $res["msg"] = "Error almacenando el registro " . $db->ErrorMsg();
+            $res["error"] = true;
             return $res;
         }
     }
