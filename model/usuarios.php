@@ -76,6 +76,18 @@ class Usuarios{
         return $res;
     }
     
+    public function consultarUsuarioPorCodigo($codigo) {
+        $res = null;
+        $con1 = new conexionBD();
+        $db = $con1->getConexDB();
+        $sql = "SELECT codigo,nombre FROM usuarios  where codigo = '$codigo'";
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+        
+        $rs = $db->Execute($sql);
+        $res = $rs->getrows();
+        return $res;
+    }
+    
      public function consultarUsuarioPorNombreJson($nombre="") {
         $result = null;
         $result["usuarios"] = $this->consultarUsuarioPorNombre($nombre);

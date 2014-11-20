@@ -50,6 +50,7 @@ class CitasDeportivas {
         if ($rs == false) {
             $res["success"] = true;
             $res["msg"] = "Error almacenando el registro " . $db->ErrorMsg();
+            $res["error"]= true;
             return $res;
         }
         $res["success"] = true;
@@ -162,7 +163,7 @@ class CitasDeportivas {
         echo json_encode($result);
     }
 
-    public function enviarEmailCita($codigo =0) {
+    public function enviarEmailCita($codigo =0,$json =true) {
         $agendados = null;
         
         $datos = $this->consultarCitasDeportivasPorId($codigo);
@@ -173,15 +174,17 @@ class CitasDeportivas {
         
         $agendados = CitasDeportivas::consultarAgendaDeportivaCita($codigo,'');
         //echo sizeof($agendados);
-        /*
+        
         if(sizeof($agendados)== 0){
             $res["success"] = true;
-            $res["permiso"] = false;
             $res["mensaje_error"] = "No existen registros de jugadores asociados al evento ingrese los jugadores";
-            echo json_encode($res);
-            exit();
+            $res["error"];
+            if($json==true){
+                echo json_encode($res);
+                exit();
+            }
+            return $res;
         }
-         * */
          
         
         date_default_timezone_set('Etc/UTC');
@@ -225,8 +228,12 @@ class CitasDeportivas {
         //$mail->addReplyTo('aymer.com', 'First Last');
 
 //Set who the message is to be sent to
-        $mail->addAddress('aiobando@gmail.com', 'Aymer');
-        $mail->addAddress('manuel936@gmail.com', 'Manuel');
+        //$mail->addAddress('aiobando@gmail.com', 'Aymer');
+        //$mail->addAddress('manuel936@gmail.com', 'Manuel');
+        
+        for ($i=0; $i<sizeof($agendados);$i++){
+            $mail->addAddress($agendados[$i]["email"], $agendados[$i]["nombres"]);
+        }
 
 //Set the subject line
         $mail->Subject = "Citacion deportiva [".$titulo_cita."]";
@@ -245,12 +252,18 @@ class CitasDeportivas {
         
         $res["success"] = true;
         if (!$mail->send()) {
-            $res["mensaje_error"] ="Mailer Error: " . $mail->ErrorInfo;
+            $res["mensaje_error"] ="Error enviando el mail del evento : Mailer Error: " . $mail->ErrorInfo;
+            $res["error"] = true;
             
         } else {
             $res["msg"] ="Correo enviado con exito";
         }
-        echo json_encode($res);
+        
+        if($json ==true){
+            echo json_encode($res);
+            exit();
+        }
+        return $res;
        
     }
 
