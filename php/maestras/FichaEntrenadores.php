@@ -15,31 +15,31 @@ $opcion_actual = $session->getOpcionActual();
 $datos = $_REQUEST;
 
 $accion= $datos["accion"];
-$fecha_ingreso=$datos["fecha_ingreso"];
 $codigo=$datos["codigo"];
-$estado=$datos["estado"];
+$documento_identidad=$datos["documento_identidad"];
 $tipo_documento=$datos["tipo_documento"];
-$doc_identidad=$datos["doc_identidad"];
-//$fecha_expedicion=$datos["fecha_expedicion"];
 $nombres=$datos["nombres"];
 $apellidos=$datos["apellidos"];
-$fecha_nacimiento=$datos["fecha_nacimiento"];
-//$codigo_lugar_nacimiento=$datos["codigo_lugar_nacimiento"];
-//$tipo_sangre=$datos["tipo_sangre"];
-$direccion=$datos["direccion"];
-$barrio=$datos["barrio"];
 $telefono=$datos["telefono"];
 $celular=$datos["celular"];
+$direccion=$datos["direccion"];
+$barrio=$datos["barrio"];
+$fecha_nacimiento=$datos["fecha_nacimiento"];
+$estado=$datos["estado"];
+$genero=$datos["genero"];
+$fecha_ingreso=$datos["fecha_ingreso"];
+$observaciones=$datos["observaciones"];
+$foto = $datos["foto"];
 $email=$datos["email"];
+//$fecha_expedicion=$datos["fecha_expedicion"];
+//$codigo_lugar_nacimiento=$datos["codigo_lugar_nacimiento"];
+//$tipo_sangre=$datos["tipo_sangre"];
 //$bb_pin=$datos["bb_pin"];
 //$colegio=$datos["colegio"];
 //$grado=$datos["grado"];
-$genero=$datos["genero"];
 //$seguridad_social=$datos["email"];
 //$codigo_categoria=$datos["codigo_categoria"];
 //$codigo_suscriptor=$datos["codigo_suscriptor"];
-$observaciones=$datos["observaciones"];
-$foto = $datos["foto"];
 $imagen_entrenador = $_FILES["imagenEntrenador"];
 
 //para el paginador Extjs
@@ -55,20 +55,20 @@ $query  = $datos["query"];
 //crear clase Roles
 $entrenador = new Entrenadores($usuario, $accion, $opcion_actual);
 if($accion == "GUARDAR"){
-    $rs = $entrenador->guardarJugador($fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$nombres,$apellidos,$fecha_nacimiento,$direccion,$barrio,$telefono,$celular,$email,$genero,$observaciones,$foto);    
+    $rs = $entrenador->guardarEntrenador($fecha_ingreso,$estado,$tipo_documento,$documento_identidad,$nombres,$apellidos,$fecha_nacimiento,$direccion,$barrio,$telefono,$celular,$email,$genero,$observaciones,$foto);    
     echo json_encode($rs);
     exit();
 }
 
 if($accion =="ACTUALIZAR"){
                     
-    $rs = $jugador->actualizarJugador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto);
+    $rs = $jugador->actualizarEntrenador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto);
     echo json_encode($rs);
     exit(); 
 }
 
 if($accion == 'CONSULTAR'){
-       $jugador->consultarJugadoresJson($start,$end,$categoria,$query);
+       $jugador->consultarEntrenadoresJson($start,$end,$categoria,$query);
 }
 
 if($accion=='CARGARFOTO'){
