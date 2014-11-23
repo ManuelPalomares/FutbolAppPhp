@@ -147,9 +147,18 @@ class Jugadores {
     public function consultarTodosJugadoresxCategoria($categoria){
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        $sql1  = "select * from jugadores where codigo_categoria = $categoria";
+        $sql1  = "select * from jugadores where codigo_categoria =$categoria;";
         $rs = $db->Execute($sql1);
+        
+        if ($rs == false) {
+            $res["success"] = true;
+            $res["msg"] = "Error almacenando el registro " . $db->ErrorMsg();
+            $res["error"] = true;
+            return $res;
+        }
         $res = $rs->getrows();
+        
+        return $res; 
     }
 
     public function actualizarJugador($codigo, $fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto, $usuario_atencion = "", $inscripcion = "", $mensualidad = "", $transporte = "") {
