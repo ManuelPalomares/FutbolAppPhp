@@ -39,7 +39,7 @@ class Agendamiento {
         }
     }
     
-    public function agendar($evento,$codigoAgregar,$tipoAgenda){
+    public function agendar($evento,$codigoAgregar,$tipoAgenda,$json =false){
         
         $res = null;
         $con1 = new conexionBD();
@@ -49,17 +49,57 @@ class Agendamiento {
             $sql = "insert into agendados_eventos(evento,jugador,suscriptor) values($evento,$codigoAgregar,null)";
         }
         
-        if($tipoAgenda =="S"){
-            $sql = "insert into agendados_eventos(evento,jugador,suscriptor) values($evento,null,$codigoAgregar)";
-        }
-       
         $rs = $db->Execute($sql);
         
         if ($rs == false) {
             $res["success"] = true;
             $res["msg"] = "Error almacenando el registro " . $db->ErrorMsg();
             $res["error"] = true;
-            return $res;
+            
+        }else{
+            $res["success"] = true;
+            $res["msg"] = "Se realizo el agendamiento conrrectamente";
         }
+       
+        if($json== true){
+                echo json_encode($res);
+                exit();
+                
+        }
+        
+        return $res;
+    }
+    
+    public function consultarAgendados($start= 0,$end=0,$codigo_citaDeportiva){
+        $res = null;
+        
+        $con1 = new conexionBD();
+        $db = $con1->getConexDB();
+        
+        $sql1 = "SELECT count(1) cantidad from vw_agendadoseventos where evento ='$codigo_citaDeportiva'";
+
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+        $rs = $db->Execute($sql1);
+        $totalRows = $rs->getrows();
+        $totalRows = $totalRows[0]['cantidad'];
+               
+        
+        $sql2 = "SELECT * from vw_agendadoseventos where evento ='$codigo_citaDeportiva' LIMIT $start,$end;";
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+        $rs = $db->Execute($sql2);
+        $datos = $rs->getrows();
+        
+        return array("datos" => $datos, "totalRows" => $totalRows);
+        
+    }
+    
+    
+    public function consultarAgendadosJson($start=0,$end =0,$codigo_cita){
+        $result = null;
+        $resultSet = $this->consultarAgendados($start, $end,$codigo_cita);
+        
+        $result["agendados"] = utf8Array::Utf8_string_array_encode($resultSet["datos"]);
+        $result["totalRows"] = $resultSet["totalRows"];
+        echo json_encode($result);
     }
 }
