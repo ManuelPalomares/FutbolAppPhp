@@ -66,7 +66,119 @@ class Entrenadores {
         echo json_encode($result);
     }
     
+    public function guardarEntrenador($estado,$tipo_documento,$documento_identidad,$nombres,$apellidos,$fecha_nacimiento,$direccion,$barrio,$telefono,$celular,$email,$genero) {
+        $res = null;
+        $con = new conexionBD();
+        $db = $con->getConexDB();
+        $sql = "insert into entrenadores (codigo,estado,tipo_documento,documento_identidad,nombres,apellidos,fecha_nacimiento,direccion,barrio,telefono,celular,email,genero) values (null,'$estado','$tipo_documento','$documento_identidad','$nombres','$apellidos','$fecha_nacimiento','$direccion','$barrio','$telefono','$celular','$email','$genero')";
+        
+        $rs = $db->Execute($sql);
+        $id = $db->Insert_ID();
+
+        if ($rs == false) {
+            $res["success"] = true;
+            $res["msg"] = "Error almacenando el registro " . $db->ErrorMsg();
+            return $res;
+        }
+        $res["success"] = true;
+        $res["msg"] = "Se guardo el registro correctamente";
+        $res["newId"] = $id;
+        return($res);
+    }
     
+    public function actualizarEntrenador($codigo, $estado,$tipo_documento,$documento_identidad,$nombres,$apellidos,$fecha_nacimiento,$direccion,$barrio,$telefono,$celular,$email,$genero) 
+    {
+        $res = null;
+        $con = new conexionBD();
+        $db = $con->getConexDB();
+        $sql = "UPDATE entrenadores set estado = '$estado', tipo_documento = '$tipo_documento', documento_identidad = '$documento_identidad', nombres = '$nombres', apellidos = '$apellidos', fecha_nacimiento= '$fecha_nacimiento', direccion = '$direccion', barrio= '$barrio', telefono = '$telefono', celular = '$celular', email = '$email', genero = '$genero' where codigo = '$codigo'";
+        //echo $sql;
+        $rs = $db->Execute($sql);
+
+        if ($rs == false) {
+            $res["success"] = true;
+            $res["msg"] = "Error actualizando el registro " . $db->ErrorMsg();
+            $res["newId"] = $codigo;
+            $res["error"] = true;
+            return $res;
+        }
+        $res["success"] = true;
+        $res["msg"] = "Se actualizo el registro correctamente";
+        $res["newId"] = $codigo;
+        return($res);
+    }
+
+    public function consultarEntrenadores($start = 0, $end = 50, $categoria = 0, $queryNombre = "") {
+
+        if ($categoria != "")
+            $QueryCategoria = "and b.codigo_categoria =$categoria";
+
+        if ($queryNombre != "")
+            $queryNombre = "and CONCAT(j.nombres,' ',j.apellidos) like '%$queryNombre%'";
+
+        $res = null;
+        $con1 = new conexionBD();
+        $db = $con1->getConexDB();
+        $totalRows = null;
+        $datos = null;
+        $sql1 = "SELECT count(1) cantidad "
+                . "FROM entrenadores j ,"
+                . "categorias a, "
+                . "entrenadores_categoria b "
+                . "where 1=1 and j.codigo = b.codigo_entrenador "
+                . "and a.codigo = b.codigo_categoria "
+                . "$QueryCategoria $queryNombre";
+
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+        
+        //echo $sql1;
+        $rs = $db->Execute($sql1);
+        $res = $rs->getrows();
+        $totalRows = $res[0]["cantidad"];
+
+        $sql2 = "SELECT j.codigo,"
+                . "j.estado,"
+                . "j.tipo_documento,"
+                . "j.documento_identidad,"
+                . "j.nombres,"
+                . "j.apellidos,"
+                . "DATE_FORMAT(j.fecha_nacimiento,'%Y/%m/%d') fecha_nacimiento,"
+                . "j.direccion,"
+                . "j.barrio,"
+                . "j.telefono,"
+                . "j.celular,"
+                . "j.email,"
+                . "j.genero,"
+                . "CONCAT(j.nombres,' ',j.apellidos) nombre_completo "
+                . "FROM entrenadores j ,"
+                . "categorias a, "
+                . "entrenadores_categoria b "
+                . "where 1=1 and j.codigo = b.codigo_entrenador "
+                . "and a.codigo = b.codigo_categoria "
+                . "$QueryCategoria $queryNombre LIMIT $start,$end;";
+                
+        
+        //echo $sql2;
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+
+        $rs = $db->Execute($sql2);
+        $res = $rs->getrows();
+        $datos = $res;
+        return array("datos" => $datos, "totalRows" => $totalRows);
+    }
+
+    public function consultarEntrenadoresJson($start, $end, $categoria = 0, $queryNombre = "") {
+        $result = null;
+        $res = $this->consultarEntrenadores($start, $end, $categoria, $queryNombre);
+
+        $result["entrenadores"] = utf8Array::Utf8_string_array_encode($res["datos"]);
+        $result["totalRows"] = $res["totalRows"];
+        //print_r($result);
+
+        echo json_encode($result);
+    }
+        
+        
 /*
     public function guardarSuscriptor($fecha_ingreso, $estado, $parentesco, $tipo_documento, $numero_documento, $nombres, $apellidos, $telefono, $celular, $email, $parentesco2, $tipo_documento2, $numero_documento2, $nombres2, $apellidos2, $celular2, $email2) {
         $res = null;

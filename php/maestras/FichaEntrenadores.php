@@ -16,21 +16,21 @@ $datos = $_REQUEST;
 
 $accion= $datos["accion"];
 $codigo=$datos["codigo"];
-$documento_identidad=$datos["documento_identidad"];
+$estado=$datos["estado"];
 $tipo_documento=$datos["tipo_documento"];
+$documento_identidad=$datos["documento_identidad"];
 $nombres=$datos["nombres"];
 $apellidos=$datos["apellidos"];
-$telefono=$datos["telefono"];
-$celular=$datos["celular"];
+$fecha_nacimiento=$datos["fecha_nacimiento"];
 $direccion=$datos["direccion"];
 $barrio=$datos["barrio"];
-$fecha_nacimiento=$datos["fecha_nacimiento"];
-$estado=$datos["estado"];
 $genero=$datos["genero"];
-$fecha_ingreso=$datos["fecha_ingreso"];
-$observaciones=$datos["observaciones"];
-$foto = $datos["foto"];
+$telefono=$datos["telefono"];
+$celular=$datos["celular"];
 $email=$datos["email"];
+//$fecha_ingreso=$datos["fecha_ingreso"];
+//$observaciones=$datos["observaciones"];
+//$foto = $datos["foto"];
 //$fecha_expedicion=$datos["fecha_expedicion"];
 //$codigo_lugar_nacimiento=$datos["codigo_lugar_nacimiento"];
 //$tipo_sangre=$datos["tipo_sangre"];
@@ -40,7 +40,7 @@ $email=$datos["email"];
 //$seguridad_social=$datos["email"];
 //$codigo_categoria=$datos["codigo_categoria"];
 //$codigo_suscriptor=$datos["codigo_suscriptor"];
-$imagen_entrenador = $_FILES["imagenEntrenador"];
+//$imagen_entrenador = $_FILES["imagenEntrenador"];
 
 //para el paginador Extjs
 $start       = $datos["start"];
@@ -55,27 +55,21 @@ $query  = $datos["query"];
 //crear clase Roles
 $entrenador = new Entrenadores($usuario, $accion, $opcion_actual);
 if($accion == "GUARDAR"){
-    $rs = $entrenador->guardarEntrenador($fecha_ingreso,$estado,$tipo_documento,$documento_identidad,$nombres,$apellidos,$fecha_nacimiento,$direccion,$barrio,$telefono,$celular,$email,$genero,$observaciones,$foto);    
+    $rs = $entrenador->guardarEntrenador($estado,$tipo_documento,$documento_identidad,$nombres,$apellidos,$fecha_nacimiento,$direccion,$barrio,$telefono,$celular,$email,$genero);    
     echo json_encode($rs);
     exit();
 }
 
 if($accion =="ACTUALIZAR"){
                     
-    $rs = $jugador->actualizarEntrenador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto);
+    $rs = $entrenador->actualizarEntrenador($codigo, $estado,$tipo_documento,$documento_identidad,$nombres,$apellidos,$fecha_nacimiento,$direccion,$barrio,$telefono,$celular,$email,$genero);
     echo json_encode($rs);
     exit(); 
 }
 
-if($accion == 'CONSULTAR'){
-       $jugador->consultarEntrenadoresJson($start,$end,$categoria,$query);
+if($accion == 'CONSULTARENTRENADORESGRILLA'){
+       $entrenador->consultarEntrenadoresJson($start,$end,$categoria,$query);
 }
-
-if($accion=='CARGARFOTO'){
-    $jugador->cargarFoto($imagen_jugador);
-    
-}
-
 
 ?>
 

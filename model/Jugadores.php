@@ -38,7 +38,7 @@ class Jugadores {
         }
     }
 
-    public function guardarJugador($fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto = "", $usuario_atencion = "", $inscripcion = "", $mensualidad = "", $transporte = "") {
+    public function guardarJugador($fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto, $inscripcion, $mensualidad, $transporte, $exp_deportiva,$jornada_colegio,$referido,$responsable,$nombre_madre,$celular_madre,$email_madre,$ocupacion_madre,$empresa_madre,$nombre_padre,$celular_padre,$email_padre,$ocupacion_padre,$empresa_padre/*$usuario_atencion=""*/) {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
@@ -50,15 +50,25 @@ class Jugadores {
                 . "celular,email,bb_pin,colegio,"
                 . "grado,genero,seguridad_social,"
                 . "codigo_categoria,codigo_suscriptor,"
-                . "observaciones,foto,usuario_atencion,inscripcion,mensualidad,transporte) "
+                . "observaciones,foto,"
+                //. "usuario_atencion,"
+                . "inscripcion,mensualidad,transporte,"
+                . "exp_deportiva,jornada_colegio,referido, responsable,nombre_madre,"
+                . "celular_madre,email_madre,ocupacion_madre,empresa_madre,nombre_padre,"
+                . "celular_padre,email_padre,ocupacion_padre,empresa_padre) "
                 . "values (null,SYSDATE(),'$estado','$tipo_documento',"
                 . "'$doc_identidad','$fecha_expedicion','$nombres',"
                 . "'$apellidos','$fecha_nacimiento','$codigo_lugar_nacimiento',"
                 . "'$tipo_sangre','$direccion','$barrio','$telefono','$celular',"
                 . "'$email','$bb_pin','$colegio','$grado','$genero','$seguridad_social',"
                 . "'$codigo_categoria','$codigo_suscriptor','$observaciones',"
-                . "'$foto','$usuario_atencion','$inscripcion','$mensualidad','$transporte')";
-        //echo $sql;
+                . "'$foto',"
+                //. "'$usuario_atencion',"
+                . "'$inscripcion','$mensualidad','$transporte',"
+                . "'$exp_deportiva','$jornada_colegio','$referido','$responsable','$nombre_madre',"
+                . "'$celular_madre','$email_madre','$ocupacion_madre','$empresa_madre','$nombre_padre',"
+                . "'$celular_padre','$email_padre','$ocupacion_padre','$empresa_padre')";
+        echo $sql;
         $rs = $db->Execute($sql);
         $id = $db->Insert_ID();
 
@@ -132,8 +142,25 @@ class Jugadores {
                 . "codigo_suscriptor,"
                 . " observaciones,"
                 . "foto,"
-                . "CONCAT(j.nombres,' ',j.apellidos) nombre_completo "
-                . "FROM jugadores j where 1=1 $QueryCategoria $queryNombre LIMIT $start,$end;";
+                . "CONCAT(j.nombres,' ',j.apellidos) nombre_completo, "
+                . "inscripcion,"
+                . "mensualidad,"
+                . "transporte,"
+                . "exp_deportiva,"
+                . "jornada_colegio,"
+                . "referido,"
+                . "responsable,"
+                . "nombre_madre,"
+                . "celular_madre,"
+                . "email_madre,"
+                . "ocupacion_madre,"
+                . "empresa_madre,"
+                . "nombre_padre,"
+                . "celular_padre,"
+                . "email_padre,"
+                . "ocupacion_padre,"
+                . "empresa_padre"
+                . " FROM jugadores j where 1=1 $QueryCategoria $queryNombre LIMIT $start,$end;";
         //echo $sql2;
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
 
@@ -143,7 +170,7 @@ class Jugadores {
         return array("datos" => $datos, "totalRows" => $totalRows);
     }
 
-    public function actualizarJugador($codigo, $fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto, $usuario_atencion = "", $inscripcion = "", $mensualidad = "", $transporte = "") {
+    public function actualizarJugador($codigo, $fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto, $inscripcion, $mensualidad, $transporte, $exp_deportiva,$jornada_colegio,$referido,$responsable,$nombre_madre,$celular_madre,$email_madre,$ocupacion_madre,$empresa_madre,$nombre_padre,$celular_padre,$email_padre,$ocupacion_padre,$empresa_padre /*, $usuario_atencion = ""*/) {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
@@ -171,10 +198,24 @@ class Jugadores {
                 . "codigo_suscriptor='$codigo_suscriptor',"
                 . "observaciones='$observaciones',"
                 . "foto='$foto',"
-                . "usuario_atencion='$usuario_atencion',"
+                //. "usuario_atencion='$usuario_atencion',"
                 . "inscripcion='$inscripcion',"
                 . "mensualidad='$mensualidad',"
-                . "transporte='$transporte'"
+                . "transporte='$transporte',"
+                . "exp_deportiva='$exp_deportiva',"
+                . "jornada_colegio='$jornada_colegio',"
+                . "referido='$referido',"
+                . "responsable='$responsable',"
+                . "nombre_madre='$nombre_madre',"
+                . "celular_madre='$celular_madre',"
+                . "email_madre='$email_madre',"
+                . "ocupacion_madre='$ocupacion_madre',"
+                . "empresa_madre='$empresa_madre',"
+                . "nombre_padre='$nombre_padre',"
+                . "celular_padre='$celular_padre',"
+                . "email_padre='$email_padre',"
+                . "ocupacion_padre='$ocupacion_padre',"
+                . "empresa_padre='$empresa_padre'"
                 . " where codigo = '$codigo'";
         //echo $sql;
         $rs = $db->Execute($sql);

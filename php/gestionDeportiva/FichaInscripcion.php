@@ -40,6 +40,23 @@ $codigo_categoria=$datos["codigo_categoria"];
 $codigo_suscriptor=$datos["codigo_suscriptor"];
 $observaciones=$datos["observaciones"];
 $foto = $datos["foto"];
+$inscripcion = $datos["inscripcion"];
+$mensualidad = $datos["mensualidad"];
+$transporte = $datos["transporte"];
+$exp_deportiva = $datos["exp_deportiva"];
+$jornada_colegio = $datos["jornada_colegio"];
+$referido = $datos["referido"];
+$responsable = $datos["responsable"];
+$nombre_madre = $datos["nombre_madre"];
+$celular_madre = $datos["celular_madre"];
+$email_madre = $datos["email_madre"];
+$ocupacion_madre = $datos["ocupacion_madre"];
+$empresa_madre = $datos["empresa_madre"];
+$nombre_padre = $datos["nombre_padre"];
+$celular_padre = $datos["celular_padre"];
+$email_padre = $datos["email_padre"];
+$ocupacion_padre = $datos["ocupacion_padre"];
+$empresa_padre = $datos["empresa_padre"];
 $imagen_jugador = $_FILES["imagenJugador"];
 
 //para el paginador Extjs
@@ -55,14 +72,14 @@ $query  = $datos["query"];
 //crear clase Roles
 $jugador = new Jugadores($usuario, $accion, $opcion_actual);
 if($accion == "GUARDAR"){
-    $rs = $jugador->guardarJugador($fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto);    
+    $rs = $jugador->guardarJugador($fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto,$inscripcion, $mensualidad,$transporte, $exp_deportiva,$jornada_colegio,$referido,$responsable,$nombre_madre,$celular_madre,$email_madre,$ocupacion_madre,$empresa_madre,$nombre_padre,$celular_padre,$email_padre,$ocupacion_padre,$empresa_padre);    
     echo json_encode($rs);
     exit();
 }
 
 if($accion =="ACTUALIZAR"){
                     
-    $rs = $jugador->actualizarJugador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto);
+    $rs = $jugador->actualizarJugador($codigo,$fecha_ingreso,$estado,$tipo_documento,$doc_identidad,$fecha_expedicion,$nombres,$apellidos,$fecha_nacimiento,$codigo_lugar_nacimiento,$tipo_sangre,$direccion,$barrio,$telefono,$celular,$email,$bb_pin,$colegio,$grado,$genero,$seguridad_social,$codigo_categoria,$codigo_suscriptor,$observaciones,$foto,$inscripcion, $mensualidad,$transporte, $exp_deportiva,$jornada_colegio,$referido,$responsable,$nombre_madre,$celular_madre,$email_madre,$ocupacion_madre,$empresa_madre,$nombre_padre,$celular_padre,$email_padre,$ocupacion_padre,$empresa_padre);
     echo json_encode($rs);
     exit(); 
 }
