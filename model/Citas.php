@@ -148,7 +148,7 @@ class CitasDeportivas {
         $db = $con1->getConexDB();
         $sql = "SELECT codigo,titulo_evento,DATE_FORMAT(fecha_inicio,'%Y/%m/%d') fecha_inicio,DATE_FORMAT(fecha_fin,'%Y/%m/%d') fecha_fin,descripcion_evento,estado_evento,DATE_FORMAT(fecha_inicio, '%H:%i') hora1,DATE_FORMAT(fecha_fin, '%H:%i') hora2 FROM eventos_deportivos where codigo =$codigo ;";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
-        //echo $sql;
+        echo $sql;
         $rs = $db->Execute($sql);
         $res = $rs->getrows();
         return $res;

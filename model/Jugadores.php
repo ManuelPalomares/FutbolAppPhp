@@ -38,7 +38,7 @@ class Jugadores {
         }
     }
 
-    public function guardarJugador($fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto, $inscripcion, $mensualidad, $transporte, $exp_deportiva,$jornada_colegio,$referido,$responsable,$nombre_madre,$celular_madre,$email_madre,$ocupacion_madre,$empresa_madre,$nombre_padre,$celular_padre,$email_padre,$ocupacion_padre,$empresa_padre/*$usuario_atencion=""*/) {
+    public function guardarJugador($fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto, $inscripcion, $mensualidad, $transporte, $exp_deportiva ="",$jornada_colegio ="",$referido ="",$responsable ="",$nombre_madre ="",$celular_madre ="",$email_madre ="",$ocupacion_madre ="",$empresa_madre ="",$nombre_padre ="",$celular_padre ="",$email_padre ="",$ocupacion_padre ="",$empresa_padre ="", $usuario_atencion="") {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
@@ -51,7 +51,7 @@ class Jugadores {
                 . "grado,genero,seguridad_social,"
                 . "codigo_categoria,codigo_suscriptor,"
                 . "observaciones,foto,"
-                //. "usuario_atencion,"
+                ."usuario_atencion,"
                 . "inscripcion,mensualidad,transporte,"
                 . "exp_deportiva,jornada_colegio,referido, responsable,nombre_madre,"
                 . "celular_madre,email_madre,ocupacion_madre,empresa_madre,nombre_padre,"
@@ -63,12 +63,12 @@ class Jugadores {
                 . "'$email','$bb_pin','$colegio','$grado','$genero','$seguridad_social',"
                 . "'$codigo_categoria','$codigo_suscriptor','$observaciones',"
                 . "'$foto',"
-                //. "'$usuario_atencion',"
+                . "'$usuario_atencion',"
                 . "'$inscripcion','$mensualidad','$transporte',"
                 . "'$exp_deportiva','$jornada_colegio','$referido','$responsable','$nombre_madre',"
                 . "'$celular_madre','$email_madre','$ocupacion_madre','$empresa_madre','$nombre_padre',"
                 . "'$celular_padre','$email_padre','$ocupacion_padre','$empresa_padre')";
-        echo $sql;
+        
         $rs = $db->Execute($sql);
         $id = $db->Insert_ID();
 
@@ -188,7 +188,7 @@ class Jugadores {
         return $res; 
     }
 
-    public function actualizarJugador($codigo, $fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto, $inscripcion, $mensualidad, $transporte, $exp_deportiva,$jornada_colegio,$referido,$responsable,$nombre_madre,$celular_madre,$email_madre,$ocupacion_madre,$empresa_madre,$nombre_padre,$celular_padre,$email_padre,$ocupacion_padre,$empresa_padre /*, $usuario_atencion = ""*/) {
+    public function actualizarJugador($codigo, $fecha_ingreso, $estado, $tipo_documento, $doc_identidad, $fecha_expedicion, $nombres, $apellidos, $fecha_nacimiento, $codigo_lugar_nacimiento, $tipo_sangre, $direccion, $barrio, $telefono, $celular, $email, $bb_pin, $colegio, $grado, $genero, $seguridad_social, $codigo_categoria, $codigo_suscriptor, $observaciones, $foto, $inscripcion, $mensualidad, $transporte, $exp_deportiva ="",$jornada_colegio ="",$referido ="",$responsable ="",$nombre_madre ="",$celular_madre ="",$email_madre ="",$ocupacion_madre ="",$empresa_madre ="", $nombre_padre ="",$celular_padre ="",$email_padre ="",$ocupacion_padre ="",$empresa_padre ="", $usuario_atencion = "") {
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
@@ -216,7 +216,7 @@ class Jugadores {
                 . "codigo_suscriptor='$codigo_suscriptor',"
                 . "observaciones='$observaciones',"
                 . "foto='$foto',"
-                //. "usuario_atencion='$usuario_atencion',"
+                . "usuario_atencion='$usuario_atencion',"
                 . "inscripcion='$inscripcion',"
                 . "mensualidad='$mensualidad',"
                 . "transporte='$transporte',"

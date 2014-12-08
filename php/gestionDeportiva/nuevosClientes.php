@@ -48,7 +48,7 @@ $codigo_cita = $datos["codigo_cita"];
 //crear clase Roles
 $jugador = new Jugadores($usuario, $accion, $opcion_actual);
 if ($accion == "GUARDAR") {
-    $res1 = $jugador->guardarJugador("", $estado, "", "", "", $nombres, $apellidos, $fecha_nacimiento, "-1", "", "", "", "", "", $email, "", "", "", "", "", $cod_categoria, "", "", "", $usuario_atencion, $v_inscripcion, $v_mensualidad, $v_transporte);
+    $res1 = $jugador->guardarJugador("", $estado, "", "", "", $nombres, $apellidos, $fecha_nacimiento, "-1", "", "", "", "", "", $email, "", "", "", "", "", $cod_categoria, "", "", "", $v_inscripcion, $v_mensualidad, $v_transporte,"","","","","","","","","","","","","","",$usuario_atencion);
     $newIDJugador = $res1["newId"];
 
     if (isset($res1["error"])) {
@@ -130,18 +130,18 @@ if ($accion == "GUARDAR") {
     }
     
     
-    $result["sucess"] = true;
+    $result["success"] = true;
     $result["msg"] = "Se envia la informacion del nuevo jugador y se ingresa nuevo cliente en el sitema para prueba deportiva";
     $result["newId"]= $newIDJugador;
     $result["codigoCita"] = $id_NewCita;
-    echo json_encode($res);
+    echo json_encode($result);
     exit();
     
 }
 
 if ($accion == "ACTUALIZAR") {
-    $rs = $jugador->actualizarJugador($codigo_jugador, $fecha_ingreso, "P", "", "", "", $nombres, $apellidos, $fecha_nacimiento, "-1", "", "", "", "", "", $email, "", "", "", "", "", $cod_categoria, "", $observaciones, "", $usuario_atencion, $v_inscripcion, $v_mensualidad, $v_transporte);
-    
+    $rs = $jugador->actualizarJugador($codigo_jugador, $fecha_ingreso, "P", "", "", "", $nombres, $apellidos, $fecha_nacimiento, "-1", "", "", "", "", "", $email, "", "", "", "", "", $cod_categoria, "", $observaciones, "", $v_inscripcion, $v_mensualidad, $v_transporte,"","","","","","","","","","","","","","",$usuario_atencion);
+                    
     if($rs["error"]){
         echo json_encode($rs);
         exit();
@@ -212,9 +212,10 @@ if ($accion == "ACTUALIZAR") {
     }
     
 
-    $result["sucess"] = true;
+    $result["success"] = true;
     $result["msg"] = "Se envia la informacion del nuevo jugador y se ingresa nuevo cliente en el sitema para prueba deportiva";
     $result["newId"]= $newIDJugador;
+    $result["codigoCita"] = $codigo_cita;
     echo json_encode($result);
     exit();
 }
