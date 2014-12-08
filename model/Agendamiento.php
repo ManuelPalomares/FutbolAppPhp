@@ -38,68 +38,100 @@ class Agendamiento {
             exit();
         }
     }
-    
-    public function agendar($evento,$codigoAgregar,$tipoAgenda,$json =false){
-        
+
+    public function agendar($evento, $codigoAgregar, $tipoAgenda, $json = false) {
+
         $res = null;
-        $con1 = new conexionBD();
-        $db = $con1->getConexDB();
-        
-        if($tipoAgenda =="J"){
-            $sql = "insert into agendados_eventos(evento,jugador,suscriptor) values($evento,$codigoAgregar,null)";
-        }
-        
-        $rs = $db->Execute($sql);
-        
-        if ($rs == false) {
+
+        $jugador = $this->consultarAgendados(0, 1, $evento, $codigoAgregar);
+
+        // valida si ya fue agendado no lo agenda
+        if (sizeof($jugador["datos"]) > 0) {
             $res["success"] = true;
-            $res["msg"] = "Error almacenando el registro " . $db->ErrorMsg();
+            $res["msg"] = "El Jugador " . $jugador["datos"]["nombres"] . " ya fue agendado al evento";
             $res["error"] = true;
-            
-        }else{
-            $res["success"] = true;
-            $res["msg"] = "Se realizo el agendamiento conrrectamente";
+        } else { //agenda el jugador
+            $con1 = new conexionBD();
+            $db = $con1->getConexDB();
+
+            $sql = "insert into agendados_eventos(evento,jugador,suscriptor) values($evento,$codigoAgregar,null)";
+
+
+            $rs = $db->Execute($sql);
+
+            if ($rs == false) {
+                $res["success"] = true;
+                $res["msg"] = "Error almacenando el registro " . $db->ErrorMsg();
+                $res["error"] = true;
+            } else {
+                $res["success"] = true;
+                $res["msg"] = "Se realizo el agendamiento conrrectamente";
+            }
         }
-       
-        if($json== true){
-                echo json_encode($res);
-                exit();
-                
+        if ($json == true) {
+            echo json_encode($res);
+            exit();
         }
-        
+
         return $res;
     }
-    
-    public function consultarAgendados($start= 0,$end=0,$codigo_citaDeportiva){
+
+    public function consultarAgendados($start = 0, $end = 0, $codigo_citaDeportiva, $codigoJugador = "") {
         $res = null;
-        
+
         $con1 = new conexionBD();
         $db = $con1->getConexDB();
-        
-        $sql1 = "SELECT count(1) cantidad from vw_agendadoseventos where evento ='$codigo_citaDeportiva'";
+
+        if ($codigoJugador !== "")
+            $queryJugador = " and jugador =$codigoJugador";
+
+        $sql1 = "SELECT count(1) cantidad from vw_agendadoseventos where evento ='$codigo_citaDeportiva' $queryJugador";
 
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
         $rs = $db->Execute($sql1);
         $totalRows = $rs->getrows();
         $totalRows = $totalRows[0]['cantidad'];
-               
-        
-        $sql2 = "SELECT * from vw_agendadoseventos where evento ='$codigo_citaDeportiva' LIMIT $start,$end;";
+
+
+        $sql2 = "SELECT * from vw_agendadoseventos where evento ='$codigo_citaDeportiva' $queryJugador LIMIT $start,$end;";
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
         $rs = $db->Execute($sql2);
         $datos = $rs->getrows();
-        
+
         return array("datos" => $datos, "totalRows" => $totalRows);
-        
     }
-    
-    
-    public function consultarAgendadosJson($start=0,$end =0,$codigo_cita){
+
+    public function consultarAgendadosJson($start = 0, $end = 0, $codigo_cita) {
         $result = null;
-        $resultSet = $this->consultarAgendados($start, $end,$codigo_cita);
-        
+        $resultSet = $this->consultarAgendados($start, $end, $codigo_cita);
+
         $result["agendados"] = utf8Array::Utf8_string_array_encode($resultSet["datos"]);
         $result["totalRows"] = $resultSet["totalRows"];
         echo json_encode($result);
     }
+
+    public function eliminardeAgenda($cita, $jugador, $json = true) {
+        $con1 = new conexionBD();
+        $db = $con1->getConexDB();
+
+        $sql = "delete from agendados_eventos where evento ='$cita' and jugador ='$jugador';";
+        $rs = $db->Execute($sql);
+
+        if ($rs == false) {
+            $res["success"] = true;
+            $res["msg"] = "Error eliminando el registro " . $db->ErrorMsg();
+            $res["error"] = true;
+        } else {
+            $res["success"] = true;
+            $res["msg"] = "Se  elimino correctamente";
+        }
+
+        if ($json == true) {
+            echo json_encode($res);
+            exit();
+        }
+
+        return $res;
+    }
+
 }
