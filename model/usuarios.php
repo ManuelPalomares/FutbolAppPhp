@@ -41,16 +41,22 @@ class Usuarios{
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $rs = $db->Execute("select * from usuarios where usuario='$usuario'");
+        $sql = "select * from usuarios where usuario='$usuario'";
+        
+        
+        $rs = $db->Execute($sql);
         $res = $rs->getRows();
         return $res;
     }
     
     public function consultarUsuario($usuario,$password){
+        
         $res = null;
         $con = new conexionBD();
         $db = $con->getConexDB();
-        $rs = $db->Execute("select * from usuarios where usuario='$usuario' and password = '$password'");
+        $sql = "select * from usuarios where usuario='$usuario' and password = '$password'";
+        
+        $rs = $db->Execute($sql);
         $res = $rs->getRows();
         return $res;
     }
